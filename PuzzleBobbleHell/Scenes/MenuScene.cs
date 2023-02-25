@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleBobbleHell.Scenes
 {
-    public class PlaceholderScene : GameScene
+    public class MenuScene : GameScene
     {
         private ContentManager contentManager;
         public void LoadContent(ContentManager Content)
@@ -26,8 +26,6 @@ namespace PuzzleBobbleHell.Scenes
             // TODO: Add your update logic here
 
             // ? Change scene
-            // ! Change from the "MenuScene" to whatever scene your want.
-            // ! See the enum for scene name in "SceneManager" file.
             Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.MenuScene);
         }
 

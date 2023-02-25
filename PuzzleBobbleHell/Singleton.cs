@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using PuzzleBobbleHell.Manager;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace PuzzleBobbleHell
         public int heightScreen = 900;
         public int widthScreen = 1600;
 
+        // ? ContentManager
+        public ContentManager contentManager;
 
         // ? SceneManager
         public SceneManager sceneManager = new SceneManager();

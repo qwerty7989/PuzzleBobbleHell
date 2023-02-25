@@ -34,7 +34,6 @@ namespace PuzzleBobbleHell.Manager
         {
             switch (sceneName)
             {
-                /*
                 case SceneName.MenuScene:
                     currentGameScene = new MenuScene();
                     break;
@@ -44,11 +43,9 @@ namespace PuzzleBobbleHell.Manager
                 case SceneName.CreditScene:
                     currentGameScene = new CreditScene();
                     break;
-                */
                 case SceneName.PlayScene:
                     currentGameScene = new PlayScene();
                     break;
-                /*
                 case SceneName.LoadingScene:
                     currentGameScene = new LoadingScene();
                     break;
@@ -61,8 +58,8 @@ namespace PuzzleBobbleHell.Manager
                 case SceneName.EndGameScene:
                     currentGameScene = new EndGameScene();
                     break;
-                */
             }
+            LoadContent(Singleton.Instance.contentManager);
         }
         public void LoadContent(ContentManager Content)
         {

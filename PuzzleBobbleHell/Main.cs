@@ -17,6 +17,7 @@ namespace PuzzleBobbleHell
             // ? System-related variable and setting.
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Singleton.Instance.contentManager = Content;
             IsMouseVisible = false; // ? Not showing mouse cursor.
 
 
