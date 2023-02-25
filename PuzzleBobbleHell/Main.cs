@@ -57,7 +57,7 @@ namespace PuzzleBobbleHell
             // ? System-related logic code here. e.g. isFullScreen, isExitGame
             Singleton.Instance.sceneManager.Update(gameTime);
 
-
+            
             // ! NOTHING TO ADD HERE!
 
 

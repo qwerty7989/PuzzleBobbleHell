@@ -26,7 +26,7 @@ namespace PuzzleBobbleHell.Scenes
             // TODO: Add your update logic here
 
             // ? Change scene
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.MenuScene);
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -44,10 +44,10 @@ namespace PuzzleBobbleHell.Manager
                 case SceneName.CreditScene:
                     currentGameScene = new CreditScene();
                     break;
-                */
+                
                 case SceneName.PlayScene:
                     currentGameScene = new PlayScene();
-                    break;
+                    break*/
                 /*
                 case SceneName.LoadingScene:
                     currentGameScene = new LoadingScene();
@@ -55,13 +55,14 @@ namespace PuzzleBobbleHell.Manager
                 case SceneName.StoryScene:
                     currentGameScene = new StoryScene();
                     break;
+                */
                 case SceneName.EndStageScene:
                     currentGameScene = new EndStageScene();
                     break;
                 case SceneName.EndGameScene:
                     currentGameScene = new EndGameScene();
                     break;
-                */
+                
             }
         }
         public void LoadContent(ContentManager Content)
