@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using PuzzleBobbleHell.Manager;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace PuzzleBobbleHell
 {
@@ -24,8 +20,12 @@ namespace PuzzleBobbleHell
 	public class Singleton
 	{
 		// ? System-related
-		public int heightScreen = 900;
-		public int widthScreen = 1600;
+		public int heightScreen = 1080;
+		public int widthScreen = 1920;
+		public bool isExitGame = false;
+
+		// ? Graphic Manager
+		public GraphicsDeviceManager graphicsDeviceManager;
 
 		// ? ContentManager
 		public ContentManager contentManager;
@@ -35,7 +35,7 @@ namespace PuzzleBobbleHell
 
 
 		// ? PlayScene
-		public int Score = 0;
+		public int score = 0;
 		public int mainStage = 1; // ? The main stage number (1)-1
 		public int subStage = 1; // ? The sub stage number 1-(1)
 
