@@ -10,51 +10,54 @@ using PuzzleBobbleHell.Manager;
 
 namespace PuzzleBobbleHell.Scenes
 {
-    public class PlayScene : GameScene
-    {
-        private ContentManager contentManager;
-        private int playerHealth = 3; // ? Starting health with 3 hearts.
-        private int bossHealth = -1; // ? -1, mean there's no boss existed. 
+	public class PlayScene : GameScene
+	{
+		private ContentManager contentManager;
+		private int playerHealth = 3; // ? Starting health with 3 hearts.
+		private int bossHealth = -1; // ? -1, mean there's no boss existed.
 
-        public PlayScene()
-        {
+		private Texture2D _cannon;
 
-        }
-        public void LoadContent(ContentManager Content)
-        {
-            contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
+		public PlayScene()
+		{
 
-            // TODO: use this.Content to load your game content here
-            /*
-            // ? Textures
-            _line = this.contentManager.Load<Texture2D>("Line");
-            _cross = this.contentManager.Load<Texture2D>("Cross");
-            _circle = this.contentManager.Load<Texture2D>("Circle");
-            
-            // ? Fonts
-            _fontTerminal = this.contentManager.Load<SpriteFont>("Fonts/Terminal");
-            
-            // ? Sounds
-			_exampleSound = content.Load<SoundEffect>("Audios/ExampleSound").CreateInstance();
-            // ? Effects
-            */
-        }
+		}
 
-        public void UnloadContent()
-        {
-            contentManager.Unload();
-        }
+		public void LoadContent(ContentManager Content)
+		{
+			contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
 
-        public void Update(GameTime gameTime)
-        {
-            // TODO: Add your update logic here
+			// TODO: use this.Content to load your game content here
 
-        }
+			// ? Textures
+			//_line = this.contentManager.Load<Texture2D>("Line");
+			//_cross = this.contentManager.Load<Texture2D>("Cross");
+			//_circle = this.contentManager.Load<Texture2D>("Circle");
+			_cannon = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            // TODO: Add your drawing code here
-            //spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
-        }
-    }
+			// ? Fonts
+			//_fontTerminal = this.contentManager.Load<SpriteFont>("Fonts/Terminal");
+
+			// ? Sounds
+			//_exampleSound = content.Load<SoundEffect>("Audios/ExampleSound").CreateInstance();
+			// ? Effects
+		}
+
+		public void UnloadContent()
+		{
+			contentManager.Unload();
+		}
+
+		public void Update(GameTime gameTime)
+		{
+			// TODO: Add your update logic here
+
+		}
+
+		public void Draw(SpriteBatch spriteBatch)
+		{
+			// TODO: Add your drawing code here
+			//spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
+		}
+	}
 }

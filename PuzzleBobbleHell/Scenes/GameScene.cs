@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PuzzleBobbleHell.Scenes
 {
-    internal interface GameScene
-    {
-        public void LoadContent(ContentManager Content);
-        public void UnloadContent();
-        public void Update(GameTime gameTime);
-        public void Draw(SpriteBatch spriteBatch);
-    }
+	internal interface GameScene
+	{
+		public void LoadContent(ContentManager Content);
+		public void UnloadContent();
+		public void Update(GameTime gameTime);
+		public void Draw(SpriteBatch spriteBatch);
+	}
 }
