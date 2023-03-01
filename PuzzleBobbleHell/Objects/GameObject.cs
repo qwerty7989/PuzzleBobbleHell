@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace PuzzleBobbleHell.Objects
 {
-	internal interface GameObject
-	{
-		public void LoadContent(ContentManager Content);
-		public void UnloadContent();
-		public void Update(GameTime gameTime);
-		public void Draw(SpriteBatch spriteBatch);
-	}
+    internal interface GameObject
+    {
+        public void LoadContent(ContentManager Content);
+        public void UnloadContent();
+        public void Update(GameTime gameTime);
+        public void Draw(SpriteBatch spriteBatch);
+    }
 }
