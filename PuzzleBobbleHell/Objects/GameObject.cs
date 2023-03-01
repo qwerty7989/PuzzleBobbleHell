@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PuzzleBobbleHell.GameObject
+namespace PuzzleBobbleHell.Objects
 {
     internal interface GameObject
     {
