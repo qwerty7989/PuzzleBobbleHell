@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin C:/Users/toythn/Downloads/sliderbar.png
+#begin Slider/sliderbar.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:C:/Users/toythn/Downloads/sliderbar.png;Slider/sliderbar.png
+/build:Slider/sliderbar.png
 
 #begin Font/Pixel.spritefont
 /importer:FontDescriptionImporter
