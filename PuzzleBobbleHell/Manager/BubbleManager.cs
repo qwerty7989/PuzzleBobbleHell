@@ -9,24 +9,12 @@ namespace PuzzleBobbleHell.Manager
     {
         // ? Manager
         private ContentManager contentManager;
-        private BubbleManager bubbleManager;
 
         // ? Texture2D
-        private Texture2D _bubblePlacholder;
+        //private Texture2D _bubblePlacholder;
 
         // ? Scene Objects
         private Bubble[,] _tableBubble;
-        private Bubble _ammoBubble;
-
-        // ? Variables
-        private string[] BubbleColor = {
-            "Blue",
-            "Cyan",
-            "Green",
-            "Pink",
-            "Red",
-            "Yellow"
-        };
 
         public BubbleManager()
         {
@@ -69,30 +57,26 @@ namespace PuzzleBobbleHell.Manager
 
         public void Initiate()
         {
+            GenerateBubble(0, 7);
+        }
+
+        public void GenerateBubble(int start, int end)
+        {
             System.Random rnd = new System.Random();
 
-            int bubblePosX = 0;
-            int bubblePosY = 0;
             bool isOdd = false;
-            bool isDestroyed = false;
+            bool isEmpty = false;
             for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE_ROW; tmpY++)
             {
-                if (tmpY % 2 == 1)
-                {
-                    isOdd = true;
-                }
-                else
-                {
-                    isOdd = false;
-                }
+                isEmpty = (tmpY < start || tmpY >= end - 1) ? true : false;
+                isOdd = (tmpY % 2 == 1) ? true : false;
 
                 for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE_COLUMN; tmpX++)
                 {
-                    string randomColor = BubbleColor[rnd.Next(6)];
-                    _tableBubble[tmpY,tmpX] = new Bubble(tmpX, tmpY, isOdd, randomColor, isDestroyed);
+                    string randomColor = (isEmpty) ? "Black" : Singleton.Instance.BubbleColor[rnd.Next(6)];
+                    _tableBubble[tmpY,tmpX] = new Bubble(tmpX, tmpY, isOdd, randomColor, isEmpty);
                 }
             }
-
         }
     }
 }

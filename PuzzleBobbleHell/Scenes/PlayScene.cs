@@ -14,15 +14,10 @@ namespace PuzzleBobbleHell.Scenes
         private BubbleManager bubbleManager;
 
         // ? Texture2D
-        private Texture2D _backgroundObject;
+        private Texture2D _gameBackgroundPlaceholder;
 
         // ? Scene Objects
         private Cannon _cannon;
-
-        // ? Background
-        private Vector2 gameBackgroundSize;
-        private Vector2 gameForegroundSize;
-        private Vector2 HUDBackgroundSize;
 
         // ? Gameplay variable
         private int playerHealth = 3; // ? Starting health with 3 hearts.
@@ -33,11 +28,6 @@ namespace PuzzleBobbleHell.Scenes
             // ? Initiate Bubble Manager
             bubbleManager = new BubbleManager();
 
-            // ? Define back/fore-ground size
-            gameBackgroundSize = new Vector2(1280, 1080);
-            gameForegroundSize = new Vector2(768, 1048);
-            HUDBackgroundSize = new Vector2(640, 1080);
-
             // ? Initiate Objects
             _cannon = new Cannon();
         }
@@ -47,10 +37,10 @@ namespace PuzzleBobbleHell.Scenes
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
 
             // ? Shapes
-            _backgroundObject = new Texture2D(Singleton.Instance.graphicsDeviceManager.GraphicsDevice, 1, 1);
+            _gameBackgroundPlaceholder = new Texture2D(Singleton.Instance.graphicsDeviceManager.GraphicsDevice, 1, 1);
             Color[] data = new Color[1 * 1];
             for (int i = 0; i < data.Length; ++i) data[i] = Color.White;
-            _backgroundObject.SetData(data);
+            _gameBackgroundPlaceholder.SetData(data);
 
             // ? Textures
             //_bubblePlacholder = this.contentManager.Load<Texture2D>("PlayScene/BubbleRed");
@@ -95,17 +85,17 @@ namespace PuzzleBobbleHell.Scenes
             // TODO: Add your drawing code here
 
             // ? Draw Background
-            spriteBatch.Draw(_backgroundObject, new Vector2(1280, 0), null, Color.DimGray, 0f, Vector2.Zero, HUDBackgroundSize, SpriteEffects.None, 0);
-            spriteBatch.Draw(_backgroundObject, new Vector2(0, 0), null, Color.OldLace, 0f, Vector2.Zero, gameBackgroundSize, SpriteEffects.None, 0);
-            spriteBatch.Draw(_backgroundObject, new Vector2(256, 16), null, Color.LightGray, 0f, Vector2.Zero, gameForegroundSize, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_SCREEN_POSITION, null, Color.DimGray, 0f, Vector2.Zero, Singleton.Instance.HUD_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.BACKGROUND_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.BACKGROUND_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.GAME_SCREEN_POSITION, null, Color.LightGray, 0f, Vector2.Zero, Singleton.Instance.GAME_SCREEN_SIZE, SpriteEffects.None, 0);
 
             // ? Draw Sprite
             //spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
 
 
             // ? Draw Objects
-            bubbleManager.Draw(spriteBatch);
             _cannon.Draw(spriteBatch);
+            bubbleManager.Draw(spriteBatch);
         }
     }
 }

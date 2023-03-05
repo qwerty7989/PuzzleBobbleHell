@@ -38,7 +38,16 @@ namespace PuzzleBobbleHell
         public int score = 0;
         public int mainStage = 1; // ? The main stage number (1)-1
         public int subStage = 1; // ? The sub stage number 1-(1)
-        public int BUBBLE_SIZE_ROW = 8;
+        public string[] BubbleColor = {
+            "Blue",
+            "Cyan",
+            "Green",
+            "Pink",
+            "Red",
+            "Yellow"
+        };
+        public int CANNON_CARTRIDGE_SIZE = 3;
+        public int BUBBLE_SIZE_ROW = 10;
         public int BUBBLE_SIZE_COLUMN = 11;
         public int BUBBLE_SIZE_WIDTH = 704;
         public int BUBBLE_SIZE_HEIGHT = 512;
@@ -47,6 +56,13 @@ namespace PuzzleBobbleHell
         public int BUBBLE_MARGIN_WIDTH = 64;
         public int BUBBLE_MARGIN_HEIGHT = 64;
         public int BUBBLE_ODD_ROW_MARGIN = 32;
+        public Vector2 GAME_SCREEN_SIZE = new Vector2(768,1048);
+        public Vector2 GAME_SCREEN_POSITION = new Vector2(256, 16);
+        public Vector2 HUD_SCREEN_SIZE = new Vector2(640,1080);
+        public Vector2 HUD_SCREEN_POSITION = new Vector2(1280, 0);
+        public Vector2 BACKGROUND_SCREEN_SIZE = new Vector2(1280,1080);
+        public Vector2 BACKGROUND_SCREEN_POSITION = new Vector2(0, 0);
+
 
         // ? Singleton Stuff
         private static Singleton instance;
