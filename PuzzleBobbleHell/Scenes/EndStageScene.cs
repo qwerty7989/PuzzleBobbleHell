@@ -34,7 +34,7 @@ namespace PuzzleBobbleHell.Scenes
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("MenuScene/background"));
-            nextButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 500, 300, 75), contentManager.Load<Texture2D>("MenuScene/play_button"));
+            nextButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 200, 300, 75), contentManager.Load<Texture2D>("MenuScene/play_button"));
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
 
             /* Subscribe Event */
