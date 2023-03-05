@@ -10,13 +10,12 @@ namespace PuzzleBobbleHell.Objects
     {
         private ContentManager contentManager;
 
-        protected Texture2D _texture;
+        protected Texture2D _cannon;
 
         public Vector2 Position;
         public float Rotation;
-         public Vector2 Origin;
+        public Vector2 Origin;
         public Vector2 Scale;
-        public string Name;
 
         public Cannon()
         {
@@ -29,7 +28,7 @@ namespace PuzzleBobbleHell.Objects
         public void LoadContent(ContentManager Content)
         {
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
-            _texture = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
+            _cannon = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
         }
         public void UnloadContent()
         {
@@ -49,7 +48,7 @@ namespace PuzzleBobbleHell.Objects
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, null, Color.White, Rotation, Origin, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_cannon, Position, null, Color.White, Rotation, Origin, 1f, SpriteEffects.None, 0f);
         }
     }
 }

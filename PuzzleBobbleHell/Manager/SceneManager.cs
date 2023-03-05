@@ -20,10 +20,12 @@ namespace PuzzleBobbleHell.Manager
             EndStageScene,
             EndGameScene,
         }
+
         public SceneManager()
         {
             currentGameScene= new PlaceholderScene();
         }
+
         public void changeScene(SceneName sceneName)
         {
             switch (sceneName)
