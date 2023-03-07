@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PuzzleBobbleHell.Manager;
+using PuzzleBobbleHell.Objects;
 
 namespace PuzzleBobbleHell
 {
@@ -38,6 +39,8 @@ namespace PuzzleBobbleHell
         public int score = 0;
         public int mainStage = 1; // ? The main stage number (1)-1
         public int subStage = 1; // ? The sub stage number 1-(1)
+        public bool isShooting = false;
+        public Bubble shootingBubble;
         public string[] BubbleColor = {
             "Blue",
             "Cyan",
@@ -46,22 +49,20 @@ namespace PuzzleBobbleHell
             "Red",
             "Yellow"
         };
-        public int CANNON_CARTRIDGE_SIZE = 3;
-        public int BUBBLE_SIZE_ROW = 10;
-        public int BUBBLE_SIZE_COLUMN = 11;
-        public int BUBBLE_SIZE_WIDTH = 704;
-        public int BUBBLE_SIZE_HEIGHT = 512;
-        public int BUBBLE_START_X = 272;
-        public int BUBBLE_START_Y = 20;
-        public int BUBBLE_MARGIN_WIDTH = 64;
-        public int BUBBLE_MARGIN_HEIGHT = 64;
-        public int BUBBLE_ODD_ROW_MARGIN = 32;
-        public Vector2 GAME_SCREEN_SIZE = new Vector2(768,1048);
-        public Vector2 GAME_SCREEN_POSITION = new Vector2(256, 16);
-        public Vector2 HUD_SCREEN_SIZE = new Vector2(640,1080);
-        public Vector2 HUD_SCREEN_POSITION = new Vector2(1280, 0);
-        public Vector2 BACKGROUND_SCREEN_SIZE = new Vector2(1280,1080);
-        public Vector2 BACKGROUND_SCREEN_POSITION = new Vector2(0, 0);
+        public int CANNON_CARTRIDGE_SIZE = 4;
+        public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
+        public Vector2 BUBBLE_SIZE = new Vector2(9, 9);
+        public Vector2 BUBBLE_START_POS = new Vector2(603, 20);
+        public Vector2 BUBBLE_MARGIN= new Vector2(80, 80);
+        public int BUBBLE_ODD_ROW_MARGIN = 40;
+        public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
+        public Vector2 GAME_SCREEN_POSITION = new Vector2(585, 0);
+        public Vector2 HUD_LEFT_SCREEN_SIZE = new Vector2(585,1080);
+        public Vector2 HUD_LEFT_SCREEN_POSITION = new Vector2(0, 0);
+        public Vector2 HUD_RIGHT_SCREEN_SIZE = new Vector2(585,1080);
+        public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
+        //public Vector2 BACKGROUND_SCREEN_SIZE = new Vector2(585,1080);
+        //public Vector2 BACKGROUND_SCREEN_POSITION = new Vector2(0, 0);
 
 
         // ? Singleton Stuff

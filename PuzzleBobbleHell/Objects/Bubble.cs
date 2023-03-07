@@ -10,7 +10,7 @@ namespace PuzzleBobbleHell.Objects
    {
         private ContentManager contentManager;
 
-        protected string colorBubble;
+        public string colorBubble { get; }
         protected Texture2D _bubbleColor;
 
         public Vector2 Position;
@@ -32,10 +32,10 @@ namespace PuzzleBobbleHell.Objects
         }
 
         // ? Bubble
-        public Bubble(int tmpX, int tmpY, bool isOdd, string randomColor, bool isEmpty)
+        public Bubble(int tmpX, int tmpY, bool isOdd, string colorBubble, bool isEmpty)
         {
-            int posX = Singleton.Instance.BUBBLE_START_X + (Singleton.Instance.BUBBLE_MARGIN_WIDTH * tmpX);
-            int posY = Singleton.Instance.BUBBLE_START_Y + (Singleton.Instance.BUBBLE_MARGIN_HEIGHT * tmpY);
+            int posX = (int)(Singleton.Instance.BUBBLE_START_POS.X + (Singleton.Instance.BUBBLE_MARGIN.X * tmpX));
+            int posY = (int)(Singleton.Instance.BUBBLE_START_POS.Y + (Singleton.Instance.BUBBLE_MARGIN.Y * tmpY));
 
             posX += (isOdd) ? Singleton.Instance.BUBBLE_ODD_ROW_MARGIN : 0;
 
@@ -43,7 +43,7 @@ namespace PuzzleBobbleHell.Objects
             this.arrX = tmpX;
             this.arrY = tmpY;
             this.isOdd = isOdd;
-            colorBubble = randomColor;
+            this.colorBubble = colorBubble;
             this.isEmpty = isEmpty;
             isShootable = false;
         }
@@ -71,17 +71,17 @@ namespace PuzzleBobbleHell.Objects
         {
             if (isEmpty)
             {
-                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray);
+                //spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1.25f, SpriteEffects.None, 0f);
             }
             else
             {
-                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray);
+                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1.25f, SpriteEffects.None, 0f);
             }
         }
 
         public void DrawAmmo(SpriteBatch spriteBatch, Vector2 AmmoPosition)
         {
-            spriteBatch.Draw(_bubbleColor, AmmoPosition, null, Color.LightGray);
+            spriteBatch.Draw(_bubbleColor, AmmoPosition, null, Color.LightGray, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
         }
     }
 }

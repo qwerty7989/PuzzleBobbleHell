@@ -18,7 +18,7 @@ namespace PuzzleBobbleHell.Manager
 
         public BubbleManager()
         {
-            _tableBubble = new Bubble[Singleton.Instance.BUBBLE_SIZE_ROW, Singleton.Instance.BUBBLE_SIZE_COLUMN];
+            _tableBubble = new Bubble[(int)Singleton.Instance.BUBBLE_SIZE.X, (int)Singleton.Instance.BUBBLE_SIZE.Y];
             Initiate();
         }
 
@@ -26,9 +26,9 @@ namespace PuzzleBobbleHell.Manager
         {
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
 
-            for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE_ROW; tmpY++)
+            for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE.X; tmpY++)
             {
-                for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE_COLUMN; tmpX++)
+                for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE.Y; tmpX++)
                 {
                     _tableBubble[tmpY,tmpX].LoadContent(Content);
                 }
@@ -41,14 +41,30 @@ namespace PuzzleBobbleHell.Manager
 
         public void Update(GameTime gameTime)
         {
+            // ? Check where the Bubble land
+            if (Singleton.Instance.isShooting)
+            {
+                // ? Set the bubble in array
 
+
+
+                // ? Check the condition and go boom boom.
+
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE_ROW; tmpY++)
+            // ? Draw Shootable Bubble
+            if (Singleton.Instance.isShooting)
             {
-                for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE_COLUMN; tmpX++)
+                // ? Play some animation
+            }
+
+            // ? Draw Bubble on the board
+            for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE.X; tmpY++)
+            {
+                for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE.Y; tmpX++)
                 {
                     _tableBubble[tmpY,tmpX].Draw(spriteBatch);
                 }
@@ -57,7 +73,7 @@ namespace PuzzleBobbleHell.Manager
 
         public void Initiate()
         {
-            GenerateBubble(0, 7);
+            GenerateBubble(0, (int)Singleton.Instance.BUBBLE_SIZE.X - 3);
         }
 
         public void GenerateBubble(int start, int end)
@@ -66,13 +82,15 @@ namespace PuzzleBobbleHell.Manager
 
             bool isOdd = false;
             bool isEmpty = false;
-            for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE_ROW; tmpY++)
+            for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE.X; tmpY++)
             {
                 isEmpty = (tmpY < start || tmpY >= end - 1) ? true : false;
                 isOdd = (tmpY % 2 == 1) ? true : false;
 
-                for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE_COLUMN; tmpX++)
+                for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE.Y; tmpX++)
                 {
+                    if (isOdd && tmpX == Singleton.Instance.BUBBLE_SIZE.Y - 1)
+                        isEmpty = true;
                     string randomColor = (isEmpty) ? "Black" : Singleton.Instance.BubbleColor[rnd.Next(6)];
                     _tableBubble[tmpY,tmpX] = new Bubble(tmpX, tmpY, isOdd, randomColor, isEmpty);
                 }

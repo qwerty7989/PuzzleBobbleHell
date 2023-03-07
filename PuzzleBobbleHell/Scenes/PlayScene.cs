@@ -85,8 +85,8 @@ namespace PuzzleBobbleHell.Scenes
             // TODO: Add your drawing code here
 
             // ? Draw Background
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_SCREEN_POSITION, null, Color.DimGray, 0f, Vector2.Zero, Singleton.Instance.HUD_SCREEN_SIZE, SpriteEffects.None, 0);
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.BACKGROUND_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.BACKGROUND_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_LEFT_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_RIGHT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_RIGHT_SCREEN_SIZE, SpriteEffects.None, 0);
             spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.GAME_SCREEN_POSITION, null, Color.LightGray, 0f, Vector2.Zero, Singleton.Instance.GAME_SCREEN_SIZE, SpriteEffects.None, 0);
 
             // ? Draw Sprite
