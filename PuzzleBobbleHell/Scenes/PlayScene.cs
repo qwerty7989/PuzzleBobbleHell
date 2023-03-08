@@ -84,18 +84,19 @@ namespace PuzzleBobbleHell.Scenes
         {
             // TODO: Add your drawing code here
 
-            // ? Draw Background
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_LEFT_SCREEN_SIZE, SpriteEffects.None, 0);
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_RIGHT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_RIGHT_SCREEN_SIZE, SpriteEffects.None, 0);
+            // ? Draw Game Background
             spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.GAME_SCREEN_POSITION, null, Color.LightGray, 0f, Vector2.Zero, Singleton.Instance.GAME_SCREEN_SIZE, SpriteEffects.None, 0);
 
             // ? Draw Sprite
             //spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
 
-
             // ? Draw Objects
             _cannon.Draw(spriteBatch);
             bubbleManager.Draw(spriteBatch);
+
+            // ? Draw HUD Background
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_LEFT_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_RIGHT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_RIGHT_SCREEN_SIZE, SpriteEffects.None, 0);
         }
     }
 }

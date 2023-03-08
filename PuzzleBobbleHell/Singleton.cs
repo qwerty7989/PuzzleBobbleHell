@@ -24,6 +24,8 @@ namespace PuzzleBobbleHell
         public int heightScreen = 1080;
         public int widthScreen = 1920;
         public bool isExitGame = false;
+        public double gameTicksInMilliSec = 87f;
+        public double swapDelayInMilliSec = 213f;
 
         // ? Graphic Manager
         public GraphicsDeviceManager graphicsDeviceManager;

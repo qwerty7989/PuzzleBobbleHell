@@ -30,6 +30,12 @@ namespace PuzzleBobbleHell.Objects
         public Vector2 Scale;
         public Vector2 cannonSize;
 
+        public float rotateRate;
+
+        public double lastPressTime;
+        public double nowPressTime;
+        public double lastSwap;
+
         public bool isUsingSpecialAmmo;
         public int specialAmmoIndex;
 
@@ -46,6 +52,11 @@ namespace PuzzleBobbleHell.Objects
             // ? Special Ammo
             isUsingSpecialAmmo = false;
             specialAmmoIndex = 0;
+
+            lastPressTime = 0f;
+            lastSwap = 0f;
+
+            rotateRate = 1.0f;
         }
 
         public void LoadContent(ContentManager Content)
@@ -78,52 +89,78 @@ namespace PuzzleBobbleHell.Objects
 
             if (!Singleton.Instance.isShooting)
             {
+                nowPressTime = (gameTime.TotalGameTime.Ticks / System.TimeSpan.TicksPerMillisecond);
+
                 // ? Shooting!
-                if (!Singleton.Instance.isShooting && keyboardState.IsKeyDown(Keys.Space))
+                if (!Singleton.Instance.isShooting && keyboardState.IsKeyDown(Keys.Space) && nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec)
                 {
                     Singleton.Instance.isShooting = true;
                     Singleton.Instance.shootingBubble = _currentBubble;
+
+                    lastPressTime = nowPressTime;
                 }
 
 
                 // ? Rotate to the left
-                if (keyboardState.IsKeyDown(Keys.Left) && Rotation > -(5*MathHelper.Pi/12))
-                    Rotation -= MathHelper.Pi / 180;
+                if ((keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.Right)) && nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec * rotateRate)
+                {
+                    rotateRate -= 0.054f;
+                    if (rotateRate < 0.213f) rotateRate = 0.213f;
+
+                    if (keyboardState.IsKeyDown(Keys.Left) && Rotation > -(5*MathHelper.Pi/12))
+                    {
+                        Rotation -= MathHelper.Pi / 180;
+                        lastPressTime = nowPressTime;
+                    }
+                    else if (keyboardState.IsKeyDown(Keys.Right) && Rotation < (5*MathHelper.Pi/12))
+                    {
+                        Rotation += MathHelper.Pi / 180;
+                        lastPressTime = nowPressTime;
+                    }
+                }
+                else if (nowPressTime - lastPressTime > 75f)
+                {
+                    if (rotateRate > 1f)
+                        rotateRate = 1f;
+                    else
+                        rotateRate += 0.466f;
+                }
 
                 // ? Rotate to the right
-                if (keyboardState.IsKeyDown(Keys.Right) && Rotation < (5*MathHelper.Pi/12))
-                    Rotation += MathHelper.Pi / 180;
 
 
                 // ? Choose Special Ammo
                 if (isUsingSpecialAmmo)
                 {
-                    if (keyboardState.IsKeyDown(Keys.C))
+                    if (keyboardState.IsKeyDown(Keys.C) && nowPressTime - lastSwap > Singleton.Instance.swapDelayInMilliSec)
                     {
                         specialAmmoIndex %= Singleton.Instance.CANNON_SPECIAL_CARTRIDGE_SIZE;
                         _currentBubble = _ammoSpecialBubble[specialAmmoIndex++];
+                        lastSwap = nowPressTime;
                     }
-                    else if (keyboardState.IsKeyDown(Keys.X))
+                    else if (keyboardState.IsKeyDown(Keys.X) && nowPressTime - lastSwap > Singleton.Instance.swapDelayInMilliSec)
                     {
                         _currentBubble = _ammoBubble[0];
                         isUsingSpecialAmmo = false;
+                        lastSwap = nowPressTime;
                     }
                 }
-                else if (keyboardState.IsKeyDown(Keys.C))
+                else if (keyboardState.IsKeyDown(Keys.C) && nowPressTime - lastSwap > Singleton.Instance.swapDelayInMilliSec)
                 {
                     isUsingSpecialAmmo = true;
+                    lastSwap = nowPressTime;
                 }
-
 
                 // ? Swap Normal ammo
                 // ? Swapping while holding Special ammo is not allowed!
-                if (keyboardState.IsKeyDown(Keys.Z) && !isUsingSpecialAmmo)
+                if (keyboardState.IsKeyDown(Keys.Z) && !isUsingSpecialAmmo && nowPressTime - lastSwap > Singleton.Instance.swapDelayInMilliSec)
                 {
                     Bubble tmpBubble = _ammoBubble[0];
                     _ammoBubble[0] = _ammoBubble[1];
                     _ammoBubble[1] = tmpBubble;
 
                     _currentBubble = _ammoBubble[0];
+                    lastSwap = nowPressTime;
                 }
             }
         }
@@ -138,6 +175,10 @@ namespace PuzzleBobbleHell.Objects
             // ? Cartridge Ammo UI
             CartridgeNormalAmmoUI(spriteBatch);
             CartridgeSpecialAmmoUI(spriteBatch);
+
+            spriteBatch.DrawString(testingFont, "Last time: " + lastPressTime, new Vector2(800, 1000), Color.Black);
+            spriteBatch.DrawString(testingFont, "Now time: " + nowPressTime, new Vector2(800, 975), Color.Black);
+            spriteBatch.DrawString(testingFont, "Elaspsed time: " + (nowPressTime-lastPressTime), new Vector2(800, 950), Color.Black);
         }
 
         public void CannonUI(SpriteBatch spriteBatch)
@@ -150,6 +191,7 @@ namespace PuzzleBobbleHell.Objects
 
         public void GuidingLine(SpriteBatch spriteBatch)
         {
+            // TODO: FIX YOUR GUIDING LINE CODE>
             double newX = System.Math.Sin(Rotation) * (cannonSize.Y*73/100f) + Position.X;
             double offsetY = (Rotation == 0) ? 0 : (cannonSize.Y*73/100f);
             double newY = (1-System.Math.Cos(Rotation)) * (cannonSize.Y*73/100f) + Position.Y - offsetY;
@@ -157,8 +199,18 @@ namespace PuzzleBobbleHell.Objects
             // ? Find the make-sense length of cursor line
 
             int diffCenter = (int)(Singleton.Instance.GAME_SCREEN_SIZE.X + Singleton.Instance.GAME_SCREEN_POSITION.X - Position.X);
-            int cursorLength = (int)((diffCenter/System.Math.Sin(System.Math.Abs(Rotation))) - (cannonSize.Y*73/100f));
-            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Aqua, Rotation, new Vector2(1/2f,1f), new Vector2(16, cursorLength), SpriteEffects.None, 0f);
+            int cursorLength;
+            if (Rotation != 0)
+            {
+                cursorLength = (int)((diffCenter/System.Math.Sin(System.Math.Abs(Rotation))) - (cannonSize.Y*73/100f));
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(16, cursorLength), SpriteEffects.None, 0f);
+            }
+            else
+            {
+                cursorLength = (int)Singleton.Instance.GAME_SCREEN_SIZE.Y;
+                newY = Position.Y - (cannonSize.Y*73/100f);
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(16, cursorLength), SpriteEffects.None, 0f);
+            }
 
             double currentDegree = (Rotation*180)/MathHelper.Pi;
             if (currentDegree < -23 || currentDegree > 23)
@@ -166,8 +218,10 @@ namespace PuzzleBobbleHell.Objects
                 double extendX = newX + System.Math.Sin(Rotation) * (cursorLength);
                 double extendY = newY - ((System.Math.Cos(Rotation)) * cursorLength);
                 int bounceCursorLength = (int)(Singleton.Instance.GAME_SCREEN_SIZE.X/System.Math.Sin(System.Math.Abs(-Rotation)));
-                spriteBatch.Draw(_placeholderTexture, new Vector2((int)extendX, (int)extendY), null, Color.Chartreuse, -Rotation, new Vector2(1/2f,1f), new Vector2(16, bounceCursorLength), SpriteEffects.None, 0f);
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)extendX, (int)extendY), null, Color.Red, -Rotation, new Vector2(1/2f,1f), new Vector2(16, bounceCursorLength), SpriteEffects.None, 0f);
             }
+
+            spriteBatch.DrawString(testingFont, "Cursor: " + (cursorLength), new Vector2(800, 925), Color.Black);
         }
 
         public void CurrentBubbleUI(SpriteBatch spriteBatch)
