@@ -29,6 +29,7 @@ namespace PuzzleBobbleHell.Objects
         public Vector2 Origin;
         public Vector2 Scale;
         public Vector2 cannonSize;
+        public float rotateOrigin;
 
         public float rotateRate;
 
@@ -42,8 +43,9 @@ namespace PuzzleBobbleHell.Objects
         public Cannon()
         {
             cannonSize = new Vector2(128,149);
+            rotateOrigin = 73/100f;
             int posX = (int)((Singleton.Instance.GAME_SCREEN_SIZE.X/2f) + Singleton.Instance.GAME_SCREEN_POSITION.X);
-            int posY = 769 + (int)(cannonSize.Y*73/100f);
+            int posY = 769 + (int)(cannonSize.Y*rotateOrigin);
             Position = new Vector2(posX, posY);
             Rotation = 0f;
 
@@ -107,14 +109,16 @@ namespace PuzzleBobbleHell.Objects
                     rotateRate -= 0.054f;
                     if (rotateRate < 0.213f) rotateRate = 0.213f;
 
-                    if (keyboardState.IsKeyDown(Keys.Left) && Rotation > -(5*MathHelper.Pi/12))
+
+                    // ! 0.017 ~= 1 in Degree
+                    if (keyboardState.IsKeyDown(Keys.Left) && Rotation > -(7*MathHelper.Pi/16))
                     {
-                        Rotation -= MathHelper.Pi / 180;
+                        Rotation -= 0.017f;
                         lastPressTime = nowPressTime;
                     }
-                    else if (keyboardState.IsKeyDown(Keys.Right) && Rotation < (5*MathHelper.Pi/12))
+                    else if (keyboardState.IsKeyDown(Keys.Right) && Rotation < (7*MathHelper.Pi/16))
                     {
-                        Rotation += MathHelper.Pi / 180;
+                        Rotation += 0.017f;
                         lastPressTime = nowPressTime;
                     }
                 }
@@ -183,7 +187,7 @@ namespace PuzzleBobbleHell.Objects
 
         public void CannonUI(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_placeholderTexture, Position, null, Color.White, Rotation, new Vector2(1/2f,73/100f), cannonSize, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_placeholderTexture, Position, null, Color.White, Rotation, new Vector2(1/2f,rotateOrigin), cannonSize, SpriteEffects.None, 0f);
 
             // ? Load cannon with sprite
             //spriteBatch.Draw(_cannon, Position, null, Color.White, Rotation, Origin, 1f, SpriteEffects.None, 0f);
@@ -191,37 +195,66 @@ namespace PuzzleBobbleHell.Objects
 
         public void GuidingLine(SpriteBatch spriteBatch)
         {
-            // TODO: FIX YOUR GUIDING LINE CODE>
-            double newX = System.Math.Sin(Rotation) * (cannonSize.Y*73/100f) + Position.X;
-            double offsetY = (Rotation == 0) ? 0 : (cannonSize.Y*73/100f);
-            double newY = (1-System.Math.Cos(Rotation)) * (cannonSize.Y*73/100f) + Position.Y - offsetY;
+            /*
+                newX = sin(radian) * (cannon length to origin point) * (cannon postiion)
+                newY = -cos(radian) * (cannon length to origin point) * (cannon postiion)
+            */
+            double newX = System.Math.Sin(Rotation) * (cannonSize.Y*rotateOrigin) + Position.X;
+            double newY = -System.Math.Cos(Rotation) * (cannonSize.Y*rotateOrigin) + Position.Y;
 
-            // ? Find the make-sense length of cursor line
+            // ? First initial cursor line
+            double borderToCannonDistance = Singleton.Instance.GAME_SCREEN_SIZE.X + Singleton.Instance.GAME_SCREEN_POSITION.X - Position.X;
 
-            int diffCenter = (int)(Singleton.Instance.GAME_SCREEN_SIZE.X + Singleton.Instance.GAME_SCREEN_POSITION.X - Position.X);
-            int cursorLength;
-            if (Rotation != 0)
+            /*
+                borderToCannonDistance * sin(Abs(radian)) - cannon size
+            */
+            double cursorInitialLength = borderToCannonDistance/System.Math.Sin(System.Math.Abs(Rotation)) - (cannonSize.Y*rotateOrigin);
+            // ? Upper border
+            // ! 0.408 ~= 23 in Degree
+            if (Rotation > -0.408 && Rotation < 0.408)
             {
-                cursorLength = (int)((diffCenter/System.Math.Sin(System.Math.Abs(Rotation))) - (cannonSize.Y*73/100f));
-                spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(16, cursorLength), SpriteEffects.None, 0f);
+                borderToCannonDistance = newY;
+                cursorInitialLength = borderToCannonDistance/System.Math.Cos(System.Math.Abs(Rotation)) + (cannonSize.Y*rotateOrigin);
             }
-            else
+            if (Rotation.Equals(0)) cursorInitialLength = (Singleton.Instance.GAME_SCREEN_POSITION.Y + Position.Y);
+            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(16, (int)cursorInitialLength), SpriteEffects.None, 0f);
+
+            if (Rotation < -0.408 || Rotation > 0.408)
             {
-                cursorLength = (int)Singleton.Instance.GAME_SCREEN_SIZE.Y;
-                newY = Position.Y - (cannonSize.Y*73/100f);
-                spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(16, cursorLength), SpriteEffects.None, 0f);
+                double bounceX = System.Math.Sin(Rotation) * cursorInitialLength + newX;
+                double bounceY = -System.Math.Cos(Rotation) * cursorInitialLength + newY;
+                double bounceCursorLength = Singleton.Instance.GAME_SCREEN_SIZE.X/System.Math.Sin(System.Math.Abs(Rotation));
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)bounceX, (int)bounceY), null, Color.Yellow, -Rotation, new Vector2(1/2f,1f), new Vector2(16, (int)bounceCursorLength), SpriteEffects.None, 0f);
+
+                double nextBounceX = -System.Math.Sin(Rotation) * (bounceCursorLength) + bounceX;
+                double nextBounceY = -System.Math.Cos(Rotation) * (bounceCursorLength) + bounceY;
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)nextBounceX, (int)nextBounceY), null, Color.Green, Rotation, new Vector2(1/2f,1f), new Vector2(16, (int)bounceCursorLength), SpriteEffects.None, 0f);
+                //BounceCursor(spriteBatch, newX, newY, cursorInitialLength, 0, 2);
+                spriteBatch.DrawString(testingFont, "NBX: " + (nextBounceX), new Vector2(800, 925), Color.Black);
+                spriteBatch.DrawString(testingFont, "NBY: " + (nextBounceY), new Vector2(800, 900), Color.Black);
+            }
+            //spriteBatch.DrawString(testingFont, "Cursor: " + (cursorInitialLength), new Vector2(800, 925), Color.Black);
+            //spriteBatch.DrawString(testingFont, "Angle: " + (Rotation), new Vector2(800, 900), Color.Black);
+        }
+
+        public void BounceCursor(SpriteBatch spriteBatch, double newX, double newY, double cursorInitialLength, int bounceCount, int bounceAmount)
+        {
+            if (bounceAmount == bounceCount)
+                return;
+            // ? Bounce Cursor
+            double bounceX = 0f;
+            double bounceY = 0f;
+            double bounceCursorLength = 0f;
+            if (Rotation < -0.408 || Rotation > 0.408)
+            {
+                bounceX = System.Math.Sin(Rotation) * cursorInitialLength + newX;
+                bounceY = -System.Math.Cos(Rotation) * cursorInitialLength + newY;
+                bounceCursorLength = Singleton.Instance.GAME_SCREEN_SIZE.X/System.Math.Sin(System.Math.Abs(Rotation));
+                float angle = (bounceCount % 2 == 0) ? -Rotation : Rotation;
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)bounceX, (int)bounceY), null, Color.Red, angle, new Vector2(1/2f,1f), new Vector2(16, (int)bounceCursorLength), SpriteEffects.None, 0f);
             }
 
-            double currentDegree = (Rotation*180)/MathHelper.Pi;
-            if (currentDegree < -23 || currentDegree > 23)
-            {
-                double extendX = newX + System.Math.Sin(Rotation) * (cursorLength);
-                double extendY = newY - ((System.Math.Cos(Rotation)) * cursorLength);
-                int bounceCursorLength = (int)(Singleton.Instance.GAME_SCREEN_SIZE.X/System.Math.Sin(System.Math.Abs(-Rotation)));
-                spriteBatch.Draw(_placeholderTexture, new Vector2((int)extendX, (int)extendY), null, Color.Red, -Rotation, new Vector2(1/2f,1f), new Vector2(16, bounceCursorLength), SpriteEffects.None, 0f);
-            }
-
-            spriteBatch.DrawString(testingFont, "Cursor: " + (cursorLength), new Vector2(800, 925), Color.Black);
+            BounceCursor(spriteBatch, bounceX, bounceY, bounceCursorLength, bounceCount + 1, bounceAmount);
         }
 
         public void CurrentBubbleUI(SpriteBatch spriteBatch)
