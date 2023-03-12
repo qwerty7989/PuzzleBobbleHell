@@ -51,9 +51,10 @@ namespace PuzzleBobbleHell
             "Red",
             "Yellow"
         };
+        public Cannon cannon;
         public int CANNON_CARTRIDGE_SIZE = 4;
         public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
-        public Vector2 BUBBLE_SIZE = new Vector2(9, 9);
+        public Vector2 BUBBLE_SIZE = new Vector2(8, 9);
         public Vector2 BUBBLE_START_POS = new Vector2(603, 20);
         public Vector2 BUBBLE_MARGIN= new Vector2(80, 80);
         public int BUBBLE_ODD_ROW_MARGIN = 40;
@@ -63,9 +64,6 @@ namespace PuzzleBobbleHell
         public Vector2 HUD_LEFT_SCREEN_POSITION = new Vector2(0, 0);
         public Vector2 HUD_RIGHT_SCREEN_SIZE = new Vector2(585,1080);
         public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
-        //public Vector2 BACKGROUND_SCREEN_SIZE = new Vector2(585,1080);
-        //public Vector2 BACKGROUND_SCREEN_POSITION = new Vector2(0, 0);
-
 
         // ? Singleton Stuff
         private static Singleton instance;

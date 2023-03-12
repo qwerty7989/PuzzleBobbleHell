@@ -83,5 +83,10 @@ namespace PuzzleBobbleHell.Objects
         {
             spriteBatch.Draw(_bubbleColor, AmmoPosition, null, Color.LightGray, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
         }
+
+        public void DrawShooting(SpriteBatch spriteBatch, Vector2 AmmoPosition, float Rotation)
+        {
+            spriteBatch.Draw(_bubbleColor, AmmoPosition, null, Color.LightGray, Rotation, new Vector2((_bubbleColor.Width * 1.25f) / 2f, (_bubbleColor.Height)), 1.25f, SpriteEffects.None, 0f);
+        }
     }
 }
