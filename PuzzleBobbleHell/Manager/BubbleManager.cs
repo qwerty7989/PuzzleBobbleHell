@@ -49,6 +49,7 @@ namespace PuzzleBobbleHell.Manager
                 }
             }
         }
+
         public void UnloadContent()
         {
 
@@ -69,11 +70,15 @@ namespace PuzzleBobbleHell.Manager
 
                 // ? Check the condition and go boom boom.
 
+                IsShootingStop();
             }
             else
             {
                 shootingBubblePosition = Singleton.Instance.cannon.Position;
-                traverseLength = 1;
+                traverseLength = initialTraverseLength = 0f;
+                bounceX = bounceY = 0f;
+                bounceCount = 0;
+                bounceCursorLength = 5f;
             }
         }
 
@@ -115,12 +120,11 @@ namespace PuzzleBobbleHell.Manager
             {
                 if (Rotation < -0.408 || Rotation > 0.408) // ? Bouncing
                 {
-                    bounceCursorLength = Singleton.Instance.GAME_SCREEN_SIZE.X/System.Math.Sin(System.Math.Abs(Rotation));
+                    bounceCursorLength = (Singleton.Instance.GAME_SCREEN_SIZE.X - (Singleton.Instance.bounceBorderMagin*2))/System.Math.Sin(System.Math.Abs(Rotation));
                     float angleSin = (bounceCount % 2 == 1) ? Rotation : -Rotation;
                     if (traverseLength < bounceCursorLength)
                     {
-                        double newX = 0f;
-                        double newY = 0f;
+                        double newX = 0f, newY = 0f;
                         traverseLength += (cursorInitialLength/Singleton.Instance.gameTicksInMilliSec);
                         // ? Calculate bouncing line
                         // ? Bounce Cursor
@@ -136,6 +140,14 @@ namespace PuzzleBobbleHell.Manager
                         traverseLength = 0f;
                     }
                 }
+            }
+        }
+
+        public void IsShootingStop()
+        {
+            if (!((shootingBubblePosition.X > Singleton.Instance.GAME_SCREEN_POSITION.X && shootingBubblePosition.X < Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X) && (shootingBubblePosition.Y > Singleton.Instance.GAME_SCREEN_POSITION.Y && shootingBubblePosition.Y < Singleton.Instance.GAME_SCREEN_POSITION.Y + Singleton.Instance.GAME_SCREEN_SIZE.Y)))
+            {
+                Singleton.Instance.isShooting = false;
             }
         }
 
@@ -159,7 +171,7 @@ namespace PuzzleBobbleHell.Manager
                 {
                     if (isOdd && tmpX == Singleton.Instance.BUBBLE_SIZE.Y - 1)
                         isEmpty = true;
-                    string randomColor = (isEmpty) ? "Black" : Singleton.Instance.BubbleColor[rnd.Next(6)];
+                    string randomColor = (isEmpty) ? "Black" : Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
                     _tableBubble[tmpY,tmpX] = new Bubble(tmpX, tmpY, isOdd, randomColor, isEmpty);
                 }
             }

@@ -71,11 +71,11 @@ namespace PuzzleBobbleHell.Objects
         {
             if (isEmpty)
             {
-                //spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1.25f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
             else
             {
-                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1.25f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
         }
 
@@ -86,7 +86,7 @@ namespace PuzzleBobbleHell.Objects
 
         public void DrawShooting(SpriteBatch spriteBatch, Vector2 AmmoPosition, float Rotation)
         {
-            spriteBatch.Draw(_bubbleColor, AmmoPosition, null, Color.LightGray, Rotation, new Vector2((_bubbleColor.Width * 1.25f) / 2f, (_bubbleColor.Height)), 1.25f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_bubbleColor, AmmoPosition, null, Color.LightGray, Rotation, new Vector2((_bubbleColor.Width) / 2f, (_bubbleColor.Height) / 2f), 1f, SpriteEffects.None, 0f);
         }
     }
 }

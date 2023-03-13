@@ -33,6 +33,7 @@ namespace PuzzleBobbleHell.Objects
         public int cursorSize;
         public float cannonLength { get; }
         public double cursorInitialLength { set; get; }
+        public double cursorShowLength { set; get; }
 
         public float rotateRate;
 
@@ -42,6 +43,7 @@ namespace PuzzleBobbleHell.Objects
 
         public bool isUsingSpecialAmmo;
         public int specialAmmoIndex;
+        public bool loadNewAmmo;
 
         public Cannon()
         {
@@ -64,6 +66,7 @@ namespace PuzzleBobbleHell.Objects
             lastSwap = 0f;
 
             rotateRate = 1.0f;
+            loadNewAmmo = true;
         }
 
         public void LoadContent(ContentManager Content)
@@ -85,6 +88,7 @@ namespace PuzzleBobbleHell.Objects
             // ? Font
             testingFont = contentManager.Load<SpriteFont>("PlayScene/MyFont");
         }
+
         public void UnloadContent()
         {
 
@@ -97,6 +101,8 @@ namespace PuzzleBobbleHell.Objects
             if (!Singleton.Instance.isShooting)
             {
                 nowPressTime = (gameTime.TotalGameTime.Ticks / System.TimeSpan.TicksPerMillisecond);
+
+                loadNewAmmo = true;
 
                 // ? Shooting!
                 if (!Singleton.Instance.isShooting && keyboardState.IsKeyDown(Keys.Space) && nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec)
@@ -172,6 +178,22 @@ namespace PuzzleBobbleHell.Objects
                     lastSwap = nowPressTime;
                 }
             }
+            else if (loadNewAmmo) // ? Loading the new ammo and stuff
+            {
+                for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1; i++)
+                {
+                    _ammoBubble[i] = _ammoBubble[i+1];
+                }
+
+                System.Random rnd = new System.Random();
+                string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
+                _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1] = new Bubble(randomColor);
+                _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1].LoadContent(contentManager);
+
+
+                _currentBubble = _ammoBubble[0];
+                loadNewAmmo = false;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -185,6 +207,7 @@ namespace PuzzleBobbleHell.Objects
             CartridgeNormalAmmoUI(spriteBatch);
             CartridgeSpecialAmmoUI(spriteBatch);
 
+            // DEBUG
             spriteBatch.DrawString(testingFont, "Last time: " + lastPressTime, new Vector2(800, 1000), Color.Black);
             spriteBatch.DrawString(testingFont, "Now time: " + nowPressTime, new Vector2(800, 975), Color.Black);
             spriteBatch.DrawString(testingFont, "Elaspsed time: " + (nowPressTime-lastPressTime), new Vector2(800, 950), Color.Black);
@@ -213,24 +236,44 @@ namespace PuzzleBobbleHell.Objects
             /*
                 borderToCannonDistance * sin(Abs(radian)) - cannon size
             */
-            cursorInitialLength = borderToCannonDistance/System.Math.Sin(System.Math.Abs(Rotation)) - (cannonSize.Y*rotateOrigin);
+            // ! Margin offset value
+            cursorInitialLength = (borderToCannonDistance- Singleton.Instance.bounceBorderMagin)/System.Math.Sin(System.Math.Abs(Rotation)) - (cannonSize.Y*rotateOrigin);
+
+            // ! No margin offset value
+            cursorShowLength = borderToCannonDistance/System.Math.Sin(System.Math.Abs(Rotation)) - (cannonSize.Y*rotateOrigin);
+
             // ? Upper border
             // ! 0.408 ~= 23 in Degree
             if (Rotation > -0.408 && Rotation < 0.408)
             {
-                borderToCannonDistance = newY;
-                cursorInitialLength = borderToCannonDistance/System.Math.Cos(System.Math.Abs(Rotation)) + (cannonSize.Y*rotateOrigin);
+                if (Rotation.Equals(0))
+                {
+                    cursorShowLength = (Singleton.Instance.GAME_SCREEN_POSITION.Y + Position.Y);
+                }
+                else
+                {
+                    borderToCannonDistance = newY;
+                    cursorShowLength = borderToCannonDistance/System.Math.Cos(System.Math.Abs(Rotation)) + (cannonSize.Y*rotateOrigin);
+                }
             }
-            if (Rotation.Equals(0)) cursorInitialLength = (Singleton.Instance.GAME_SCREEN_POSITION.Y + Position.Y);
-            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)cursorInitialLength), SpriteEffects.None, 0f);
 
+            // ? Draw First Cursor
+            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)cursorShowLength), SpriteEffects.None, 0f);
+
+
+            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Green, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)cursorInitialLength), SpriteEffects.None, 0f);
+
+            // ? Draw Bounce Cursor
             if (Rotation < -0.408 || Rotation > 0.408)
             {
                 int amountOfBounce = 2;
-                BounceCursor(spriteBatch, newX, newY, cursorInitialLength, 0, amountOfBounce);
+                BounceCursor(spriteBatch, newX, newY, cursorShowLength, 0, amountOfBounce);
+                BounceCursorMargin(spriteBatch, newX, newY, cursorInitialLength, 0, amountOfBounce);
             }
-            //spriteBatch.DrawString(testingFont, "Cursor: " + (cursorInitialLength), new Vector2(800, 925), Color.Black);
-            //spriteBatch.DrawString(testingFont, "Angle: " + (Rotation), new Vector2(800, 900), Color.Black);
+
+            // DEBUG
+            spriteBatch.DrawString(testingFont, "Cursor: " + (cursorShowLength), new Vector2(800, 925), Color.Black);
+            spriteBatch.DrawString(testingFont, "Angle: " + (Rotation), new Vector2(800, 900), Color.Black);
         }
 
         public void BounceCursor(SpriteBatch spriteBatch, double newX, double newY, double cursorInitialLength, int bounceCount, int bounceAmount)
@@ -243,22 +286,46 @@ namespace PuzzleBobbleHell.Objects
             //    return;
 
             // ? Bounce Cursor
-            double bounceX = 0f;
-            double bounceY = 0f;
+            double bounceX = 0f, bounceY = 0f;
             double bounceCursorLength = 0f;
-            float angleSin = 0f;
-            float angleRotation = 0f;
+            float angleSin = 0f, angleRotation = 0f;
             if (Rotation < -0.408 || Rotation > 0.408)
             {
                 angleSin = (bounceCount % 2 == 0) ? Rotation : -Rotation;
-                angleRotation = (bounceCount % 2 == 0) ? -Rotation : Rotation;
+                angleRotation = -angleSin;
                 bounceX = System.Math.Sin(angleSin) * cursorInitialLength + newX;
                 bounceY = -System.Math.Cos(Rotation) * cursorInitialLength + newY;
-                bounceCursorLength = Singleton.Instance.GAME_SCREEN_SIZE.X/System.Math.Sin(System.Math.Abs(Rotation));
+                bounceCursorLength = (Singleton.Instance.GAME_SCREEN_SIZE.X)/System.Math.Sin(System.Math.Abs(Rotation));
                 spriteBatch.Draw(_placeholderTexture, new Vector2((int)bounceX, (int)bounceY), null, Color.Red, angleRotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)bounceCursorLength), SpriteEffects.None, 0f);
             }
 
             BounceCursor(spriteBatch, bounceX, bounceY, bounceCursorLength, bounceCount + 1, bounceAmount);
+        }
+
+        public void BounceCursorMargin(SpriteBatch spriteBatch, double newX, double newY, double cursorInitialLength, int bounceCount, int bounceAmount)
+        {
+            if (!(newY > Singleton.Instance.GAME_SCREEN_POSITION.Y && newY < Singleton.Instance.GAME_SCREEN_POSITION.Y + Singleton.Instance.GAME_SCREEN_SIZE.Y))
+                return;
+
+            // ? For specific amount of bounce
+            //if (bounceAmount == bounceCount)
+            //    return;
+
+            // ? Bounce Cursor
+            double bounceX = 0f, bounceY = 0f;
+            double bounceCursorLength = 0f;
+            float angleSin = 0f, angleRotation = 0f;
+            if (Rotation < -0.408 || Rotation > 0.408)
+            {
+                angleSin = (bounceCount % 2 == 0) ? Rotation : -Rotation;
+                angleRotation = -angleSin;
+                bounceX = System.Math.Sin(angleSin) * cursorInitialLength + newX;
+                bounceY = -System.Math.Cos(Rotation) * cursorInitialLength + newY;
+                bounceCursorLength = (Singleton.Instance.GAME_SCREEN_SIZE.X-(Singleton.Instance.bounceBorderMagin*2))/System.Math.Sin(System.Math.Abs(Rotation));
+                spriteBatch.Draw(_placeholderTexture, new Vector2((int)bounceX, (int)bounceY), null, Color.Green, angleRotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)bounceCursorLength), SpriteEffects.None, 0f);
+            }
+
+            BounceCursorMargin(spriteBatch, bounceX, bounceY, bounceCursorLength, bounceCount + 1, bounceAmount);
         }
 
         public void CurrentBubbleUI(SpriteBatch spriteBatch)
@@ -293,14 +360,14 @@ namespace PuzzleBobbleHell.Objects
             System.Random rnd = new System.Random();
             for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_CARTRIDGE_SIZE; tmpX++)
             {
-                string randomColor = Singleton.Instance.BubbleColor[rnd.Next(6)];
+                string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
                 _ammoBubble[tmpX] = new Bubble(randomColor);
             }
 
             // ? Random special ammo
             for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_SPECIAL_CARTRIDGE_SIZE; tmpX++)
             {
-                string randomColor = Singleton.Instance.BubbleColor[rnd.Next(6)];
+                string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
                 _ammoSpecialBubble[tmpX] = new Bubble(randomColor);
             }
 
