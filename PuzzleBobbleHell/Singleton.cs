@@ -53,7 +53,7 @@ namespace PuzzleBobbleHell
         public Cannon cannon;
         public int CANNON_CARTRIDGE_SIZE = 4;
         public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
-        public Vector2 BUBBLE_SIZE = new Vector2(9, 11);
+        public Vector2 BUBBLE_SIZE = new Vector2(11, 9);
         public Vector2 BUBBLE_START_POS = new Vector2(603, 20);
         public Vector2 BUBBLE_MARGIN= new Vector2(64, 64);
         public int BUBBLE_ODD_ROW_MARGIN = 32;

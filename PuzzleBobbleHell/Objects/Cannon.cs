@@ -180,19 +180,26 @@ namespace PuzzleBobbleHell.Objects
             }
             else if (loadNewAmmo) // ? Loading the new ammo and stuff
             {
-                for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1; i++)
+                if (isUsingSpecialAmmo) // ? using Special Ammo
                 {
-                    _ammoBubble[i] = _ammoBubble[i+1];
+
                 }
+                else // ? using Normal Ammo
+                {
+                    for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1; i++)
+                    {
+                        _ammoBubble[i] = _ammoBubble[i+1];
+                    }
 
-                System.Random rnd = new System.Random();
-                string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
-                _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1] = new Bubble(randomColor);
-                _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1].LoadContent(contentManager);
+                    System.Random rnd = new System.Random();
+                    string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
+                    _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1] = new Bubble(randomColor);
+                    _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1].LoadContent(contentManager);
 
 
-                _currentBubble = _ammoBubble[0];
-                loadNewAmmo = false;
+                    _currentBubble = _ammoBubble[0];
+                    loadNewAmmo = false;
+                }
             }
         }
 

@@ -10,7 +10,7 @@ namespace PuzzleBobbleHell.Objects
    {
         private ContentManager contentManager;
 
-        public string colorBubble { get; }
+        public string colorBubble { set; get; }
         protected Texture2D _bubbleColor;
 
         public Vector2 Position;
@@ -24,11 +24,16 @@ namespace PuzzleBobbleHell.Objects
         private int arrY;
         private bool isShootable;
 
+        // ? Check Collision stuff
+        private Bubble lastBubble;
+        private double closestDistance;
+
         // ? Ammo Bubble
         public Bubble(string randomColor)
         {
             colorBubble = randomColor;
             isShootable = true;
+            closestDistance = 99999;
         }
 
         // ? Bubble
@@ -77,6 +82,39 @@ namespace PuzzleBobbleHell.Objects
             {
                 spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
+        }
+
+        public bool checkCollision(Bubble bubbleOnTable, Vector2 shootingBubblePosition)
+        {
+            double centerXShooting = shootingBubblePosition.X + (_bubbleColor.Width / 2.0);
+            double centerYShooting = shootingBubblePosition.Y + (_bubbleColor.Height / 2.0);
+            double centerX = bubbleOnTable.Position.X + (_bubbleColor.Width / 2.0);
+            double centerY = bubbleOnTable.Position.Y + (_bubbleColor.Height / 2.0);
+
+            double distance = System.Math.Sqrt(System.Math.Pow((centerX-centerXShooting), 2) + System.Math.Pow((centerY-centerYShooting), 2));
+            if (distance < _bubbleColor.Width)
+            {
+                if (!(bubbleOnTable.isEmpty))
+                {
+                    lastBubble._bubbleColor = Singleton.Instance.shootingBubble._bubbleColor;
+                    lastBubble.isEmpty = false;
+                    return true;
+                }
+                else if (lastBubble != bubbleOnTable)
+                {
+                    closestDistance = distance;
+                    lastBubble = bubbleOnTable;
+                }
+            }
+
+            return false;
+        }
+
+        public void CopyBubble(Bubble shootingBubble)
+        {
+            colorBubble = shootingBubble.colorBubble;
+            isEmpty = false;
+            isShootable = false;
         }
 
         public void DrawAmmo(SpriteBatch spriteBatch, Vector2 AmmoPosition)
