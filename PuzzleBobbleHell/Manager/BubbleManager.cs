@@ -105,7 +105,7 @@ namespace PuzzleBobbleHell.Manager
         {
             if (initialTraverseLength < cursorInitialLength)
             {
-                initialTraverseLength += (cursorInitialLength/Singleton.Instance.gameTicksInMilliSec);
+                initialTraverseLength += (Singleton.Instance.GAME_SCREEN_SIZE.Y/Singleton.Instance.gameTicksInMilliSec);
                 double offsetX = System.Math.Sin(Rotation)*(cannonLength);
                 double offsetY = -System.Math.Cos(Rotation)*(cannonLength);
 
@@ -118,14 +118,14 @@ namespace PuzzleBobbleHell.Manager
             }
             else // ? Bouncing Line
             {
-                if (Rotation < -0.408 || Rotation > 0.408) // ? Bouncing
+                if (Rotation < -0.369 || Rotation > 0.369) // ? Bouncing
                 {
                     bounceCursorLength = (Singleton.Instance.GAME_SCREEN_SIZE.X - (Singleton.Instance.bounceBorderMagin*2))/System.Math.Sin(System.Math.Abs(Rotation));
                     float angleSin = (bounceCount % 2 == 1) ? Rotation : -Rotation;
                     if (traverseLength < bounceCursorLength)
                     {
                         double newX = 0f, newY = 0f;
-                        traverseLength += (cursorInitialLength/Singleton.Instance.gameTicksInMilliSec);
+                        traverseLength += (Singleton.Instance.GAME_SCREEN_SIZE.Y/Singleton.Instance.gameTicksInMilliSec);
                         // ? Calculate bouncing line
                         // ? Bounce Cursor
                         newX = System.Math.Sin(angleSin) * traverseLength + bounceX;
@@ -145,7 +145,7 @@ namespace PuzzleBobbleHell.Manager
 
         public void IsShootingStop()
         {
-            if (!((shootingBubblePosition.X > Singleton.Instance.GAME_SCREEN_POSITION.X && shootingBubblePosition.X < Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X) && (shootingBubblePosition.Y > Singleton.Instance.GAME_SCREEN_POSITION.Y && shootingBubblePosition.Y < Singleton.Instance.GAME_SCREEN_POSITION.Y + Singleton.Instance.GAME_SCREEN_SIZE.Y)))
+            if (!((shootingBubblePosition.X > Singleton.Instance.GAME_SCREEN_POSITION.X && shootingBubblePosition.X < Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X) && (shootingBubblePosition.Y > Singleton.Instance.GAME_SCREEN_POSITION.Y - Singleton.Instance.bounceBorderMagin && shootingBubblePosition.Y < Singleton.Instance.GAME_SCREEN_POSITION.Y + Singleton.Instance.GAME_SCREEN_SIZE.Y)))
             {
                 Singleton.Instance.isShooting = false;
             }

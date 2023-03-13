@@ -124,12 +124,12 @@ namespace PuzzleBobbleHell.Objects
                     // ! 0.017 ~= 1 in Degree
                     if (keyboardState.IsKeyDown(Keys.Left) && Rotation > -(7*MathHelper.Pi/16))
                     {
-                        Rotation -= 0.0085f;
+                        Rotation -= 0.00425f;
                         lastPressTime = nowPressTime;
                     }
                     else if (keyboardState.IsKeyDown(Keys.Right) && Rotation < (7*MathHelper.Pi/16))
                     {
-                        Rotation += 0.0085f;
+                        Rotation += 0.00425f;
                         lastPressTime = nowPressTime;
                     }
                 }
@@ -243,8 +243,8 @@ namespace PuzzleBobbleHell.Objects
             cursorShowLength = borderToCannonDistance/System.Math.Sin(System.Math.Abs(Rotation)) - (cannonSize.Y*rotateOrigin);
 
             // ? Upper border
-            // ! 0.408 ~= 23 in Degree
-            if (Rotation > -0.408 && Rotation < 0.408)
+            // ! 0.369 ~= 21 in Degree
+            if (Rotation > -0.369 && Rotation < 0.369)
             {
                 if (Rotation.Equals(0))
                 {
@@ -264,7 +264,7 @@ namespace PuzzleBobbleHell.Objects
             spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Green, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)cursorInitialLength), SpriteEffects.None, 0f);
 
             // ? Draw Bounce Cursor
-            if (Rotation < -0.408 || Rotation > 0.408)
+            if (Rotation < -0.369 || Rotation > 0.369)
             {
                 int amountOfBounce = 2;
                 BounceCursor(spriteBatch, newX, newY, cursorShowLength, 0, amountOfBounce);
@@ -289,7 +289,7 @@ namespace PuzzleBobbleHell.Objects
             double bounceX = 0f, bounceY = 0f;
             double bounceCursorLength = 0f;
             float angleSin = 0f, angleRotation = 0f;
-            if (Rotation < -0.408 || Rotation > 0.408)
+            if (Rotation < -0.369 || Rotation > 0.369)
             {
                 angleSin = (bounceCount % 2 == 0) ? Rotation : -Rotation;
                 angleRotation = -angleSin;
@@ -315,7 +315,7 @@ namespace PuzzleBobbleHell.Objects
             double bounceX = 0f, bounceY = 0f;
             double bounceCursorLength = 0f;
             float angleSin = 0f, angleRotation = 0f;
-            if (Rotation < -0.408 || Rotation > 0.408)
+            if (Rotation < -0.369 || Rotation > 0.369)
             {
                 angleSin = (bounceCount % 2 == 0) ? Rotation : -Rotation;
                 angleRotation = -angleSin;
