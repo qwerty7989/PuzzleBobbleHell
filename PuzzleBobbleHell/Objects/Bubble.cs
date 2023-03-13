@@ -18,15 +18,17 @@ namespace PuzzleBobbleHell.Objects
         public Vector2 Origin;
         public Vector2 Scale;
         public string bubbleType;
+        public bool isEmpty { set; get; }
         private bool isOdd;
-        private bool isEmpty;
         private int arrX;
         private int arrY;
         private bool isShootable;
 
         // ? Check Collision stuff
         private Bubble lastBubble;
+        private Bubble closestBubble;
         private double closestDistance;
+        private bool doneShooting;
 
         // ? Ammo Bubble
         public Bubble(string randomColor)
@@ -34,6 +36,7 @@ namespace PuzzleBobbleHell.Objects
             colorBubble = randomColor;
             isShootable = true;
             closestDistance = 99999;
+            doneShooting = false;
         }
 
         // ? Bubble
@@ -76,7 +79,7 @@ namespace PuzzleBobbleHell.Objects
         {
             if (isEmpty)
             {
-                spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                //spriteBatch.Draw(_bubbleColor, Position, null, Color.LightGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
             else
             {
@@ -84,7 +87,7 @@ namespace PuzzleBobbleHell.Objects
             }
         }
 
-        public bool checkCollision(Bubble bubbleOnTable, Vector2 shootingBubblePosition)
+        public bool checkCollision(Bubble bubbleOnTable, Vector2 shootingBubblePosition, Bubble[,] tableBubble)
         {
             double centerXShooting = shootingBubblePosition.X + (_bubbleColor.Width / 2.0);
             double centerYShooting = shootingBubblePosition.Y + (_bubbleColor.Height / 2.0);
@@ -92,19 +95,44 @@ namespace PuzzleBobbleHell.Objects
             double centerY = bubbleOnTable.Position.Y + (_bubbleColor.Height / 2.0);
 
             double distance = System.Math.Sqrt(System.Math.Pow((centerX-centerXShooting), 2) + System.Math.Pow((centerY-centerYShooting), 2));
-            if (distance < _bubbleColor.Width)
+            if (distance < _bubbleColor.Width*2/4.0 && !doneShooting)
             {
-                if (!(bubbleOnTable.isEmpty))
+                if (centerXShooting >= centerX)
                 {
-                    lastBubble._bubbleColor = Singleton.Instance.shootingBubble._bubbleColor;
-                    lastBubble.isEmpty = false;
-                    return true;
+                    if (bubbleOnTable.isOdd)
+                    {
+                        lastBubble = tableBubble[bubbleOnTable.arrY+1,bubbleOnTable.arrX+1];
+                    }
+                    else
+                    {
+                        if (bubbleOnTable.arrX == Singleton.Instance.BUBBLE_SIZE.X - 1)
+                            lastBubble = tableBubble[bubbleOnTable.arrY+1,bubbleOnTable.arrX-1];
+                        else
+                            lastBubble = tableBubble[bubbleOnTable.arrY+1,bubbleOnTable.arrX];
+                    }
+                    doneShooting = true;
                 }
-                else if (lastBubble != bubbleOnTable)
+                else // centerXShooting < centerX
                 {
-                    closestDistance = distance;
-                    lastBubble = bubbleOnTable;
+                    if (bubbleOnTable.isOdd)
+                    {
+                        lastBubble = tableBubble[bubbleOnTable.arrY+1,bubbleOnTable.arrX];
+                    }
+                    else
+                    {
+                        if (bubbleOnTable.arrX == 0)
+                            lastBubble = tableBubble[bubbleOnTable.arrY+1,bubbleOnTable.arrX];
+                        else
+                            lastBubble = tableBubble[bubbleOnTable.arrY+1,bubbleOnTable.arrX-1];
+
+                    }
+                    doneShooting = true;
                 }
+                closestDistance = distance;
+                lastBubble._bubbleColor = Singleton.Instance.shootingBubble._bubbleColor;
+                lastBubble.isEmpty = false;
+                doneShooting = false;
+                return true;
             }
 
             return false;

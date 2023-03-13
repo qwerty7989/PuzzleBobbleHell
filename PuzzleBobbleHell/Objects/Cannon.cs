@@ -265,16 +265,16 @@ namespace PuzzleBobbleHell.Objects
             }
 
             // ? Draw First Cursor
-            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)cursorShowLength), SpriteEffects.None, 0f);
+            spriteBatch.Draw(_placeholderTexture, new Vector2((float)newX, (float)newY), null, Color.Red, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (float)cursorShowLength), SpriteEffects.None, 0f);
 
 
-            spriteBatch.Draw(_placeholderTexture, new Vector2((int)newX, (int)newY), null, Color.Green, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (int)cursorInitialLength), SpriteEffects.None, 0f);
+            spriteBatch.Draw(_placeholderTexture, new Vector2((float)newX, (float)newY), null, Color.Green, Rotation, new Vector2(1/2f,1f), new Vector2(cursorSize, (float)cursorInitialLength), SpriteEffects.None, 0f);
 
             // ? Draw Bounce Cursor
             if (Rotation < -0.369 || Rotation > 0.369)
             {
                 int amountOfBounce = 2;
-                BounceCursor(spriteBatch, newX, newY, cursorShowLength, 0, amountOfBounce);
+                //BounceCursor(spriteBatch, newX, newY, cursorShowLength, 0, amountOfBounce);
                 BounceCursorMargin(spriteBatch, newX, newY, cursorInitialLength, 0, amountOfBounce);
             }
 

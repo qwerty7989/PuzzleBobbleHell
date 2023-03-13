@@ -149,10 +149,10 @@ namespace PuzzleBobbleHell.Manager
             {
                 for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE.X; tmpX++)
                 {
-                    if (tmpX == Singleton.Instance.BUBBLE_SIZE.X - 1 && tmpY % 2 == 1)
+                    if ((_tableBubble[tmpY, tmpX].isEmpty) || (tmpX == Singleton.Instance.BUBBLE_SIZE.X - 1 && tmpY % 2 == 1))
                         continue;
 
-                    if (Singleton.Instance.shootingBubble.checkCollision(_tableBubble[tmpY, tmpX], shootingBubblePosition))
+                    if (Singleton.Instance.shootingBubble.checkCollision(_tableBubble[tmpY, tmpX], shootingBubblePosition, _tableBubble))
                     {
                         Singleton.Instance.isShooting = false;
                         break;
@@ -183,7 +183,7 @@ namespace PuzzleBobbleHell.Manager
             for (int tmpY = 0; tmpY < Singleton.Instance.BUBBLE_SIZE.Y; tmpY++)
             {
                 isEmpty = (tmpY < start || tmpY >= end - 1) ? true : false;
-                isOdd = (tmpY % 2 == 1) ? true : false;
+                isOdd = (tmpY % 2 == 0) ? true : false;
 
                 for (int tmpX = 0; tmpX < Singleton.Instance.BUBBLE_SIZE.X; tmpX++)
                 {

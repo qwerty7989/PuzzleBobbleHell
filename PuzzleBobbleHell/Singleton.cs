@@ -53,9 +53,9 @@ namespace PuzzleBobbleHell
         public Cannon cannon;
         public int CANNON_CARTRIDGE_SIZE = 4;
         public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
-        public Vector2 BUBBLE_SIZE = new Vector2(11, 9);
-        public Vector2 BUBBLE_START_POS = new Vector2(603, 20);
-        public Vector2 BUBBLE_MARGIN= new Vector2(64, 64);
+        public Vector2 BUBBLE_SIZE = new Vector2(12, 10);
+        public Vector2 BUBBLE_START_POS = new Vector2(587, 20);
+        public Vector2 BUBBLE_MARGIN= new Vector2(62, 54);
         public int BUBBLE_ODD_ROW_MARGIN = 32;
         public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
         public Vector2 GAME_SCREEN_POSITION = new Vector2(585, 0);
