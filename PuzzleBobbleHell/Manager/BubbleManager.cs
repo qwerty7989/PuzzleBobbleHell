@@ -32,6 +32,15 @@ namespace PuzzleBobbleHell.Manager
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}
         };
+        public Dictionary<string, int> shortToIndex = new Dictionary<string, int>(){
+            {"Blue", 0},
+            {"Cyan", 1},
+            {"Green", 2},
+            {"Red", 3},
+            {"Yellow", 4},
+            {"Black", 5}
+        };
+        private int[] amountBubbleColor = {0, 0, 0, 0, 0};
 
         public BubbleManager()
         {
@@ -58,6 +67,11 @@ namespace PuzzleBobbleHell.Manager
 
         public void Update(GameTime gameTime)
         {
+            if (listBubble.FindAll(bubble => bubble.isActive).Count == 0)
+            {
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
+            }
+
             if (Singleton.Instance.isShooting)
             {
                 Singleton.Instance._shootingBubble.Position.X += Singleton.Instance._shootingBubble.Velocity.X;
@@ -92,6 +106,7 @@ namespace PuzzleBobbleHell.Manager
                         if (closestBubble == null)
                         {
                             // ? Game Over!
+                            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
                         }
 
                         if (closestBubble != null) {
@@ -230,7 +245,10 @@ namespace PuzzleBobbleHell.Manager
 
             if (matchedBubbles.Count >= 3)
             {
-                matchedBubbles.ForEach(bubble => bubble.isActive = false);
+                matchedBubbles.ForEach(bubble => {
+                    bubble.isActive = false;
+                    amountBubbleColor[shortToIndex[bubble.colorBubble]]--;
+                });
             }
         }
 
@@ -257,6 +275,7 @@ namespace PuzzleBobbleHell.Manager
             activeBubbles.FindAll(bubble => !bubble.isProcessed).ForEach(bubble =>
             {
                 bubble.isActive = false;
+                amountBubbleColor[shortToIndex[bubble.colorBubble]]--;
             });
         }
 
@@ -281,6 +300,7 @@ namespace PuzzleBobbleHell.Manager
                     else
                     {
                         CreateBubble(col * Singleton.Instance.BUBBLE_GRID_MARGIN, row * Singleton.Instance.BUBBLE_GRID_MARGIN, Singleton.Instance.BUBBLE_COLOR_DIC[color]);
+                        amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
                     }
                 }
             }
@@ -308,13 +328,22 @@ namespace PuzzleBobbleHell.Manager
             Singleton.Instance._shootingBubble.Position.Y = Singleton.Instance._shootingBubble.originalPos.Y;
             Singleton.Instance._shootingBubble.Velocity.X = Singleton.Instance._shootingBubble.Velocity.Y = 0;
 
-            Singleton.Instance._shootingBubble.colorBubble = BubbleColorList[RandomNumber(0, Singleton.Instance.BUBBLE_COLOR_DIC.Count-1)];
+            List<int> viableColor = new List<int>();
+            for (int i = 0; i < amountBubbleColor.Length; i++)
+            {
+                if (amountBubbleColor[i] != 0)
+                {
+                    viableColor.Add(i);
+                }
+            }
+            Singleton.Instance._shootingBubble.colorBubble = BubbleColorList[viableColor[RandomNumber(0, viableColor.Count)]];
         }
 
         public void handleCollision(Bubble bubbleOnGrid)
         {
             bubbleOnGrid.colorBubble = Singleton.Instance._shootingBubble.colorBubble;
             bubbleOnGrid.isActive = true;
+            amountBubbleColor[shortToIndex[bubbleOnGrid.colorBubble]]++;
             getNewBubble();
             removeMatch(bubbleOnGrid);
             dropFloatingBubbles();

@@ -100,8 +100,8 @@ namespace PuzzleBobbleHell.Scenes
             //spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
 
             // ? Draw Objects
-            bubbleManager.Draw(spriteBatch);
             _cannon.Draw(spriteBatch);
+            bubbleManager.Draw(spriteBatch);
 
             // ? Draw HUD Background
             spriteBatch.Draw(_leftHUDBackground, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.White);
