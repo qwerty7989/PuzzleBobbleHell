@@ -23,7 +23,7 @@ namespace PuzzleBobbleHell.Scenes
             // ? Change scene
             // ! Change from the "MenuScene" to whatever scene your want.
             // ! See the enum for scene name in "SceneManager" file.
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.MenuScene);
         }
 
         public void Draw(SpriteBatch spriteBatch)

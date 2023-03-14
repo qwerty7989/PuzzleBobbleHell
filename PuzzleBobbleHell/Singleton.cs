@@ -68,6 +68,16 @@ namespace PuzzleBobbleHell
         public Vector2 HUD_RIGHT_SCREEN_SIZE = new Vector2(585,1080);
         public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
 
+        // TODO
+        // - Cartridge
+        // - Ceiling Drop --> 1 hours
+        // - Boss
+        // - Skills --> 1 hours
+        // - Animation
+        // - Effect
+        // - Sound --> 2 hours
+        // - Merge Branch --> 1 hours
+
         // ? Singleton Stuff
         private static Singleton instance;
         public static Singleton Instance

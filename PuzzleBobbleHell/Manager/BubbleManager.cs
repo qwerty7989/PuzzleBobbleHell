@@ -106,7 +106,7 @@ namespace PuzzleBobbleHell.Manager
                         if (closestBubble == null)
                         {
                             // ? Game Over!
-                            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
+                            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
                         }
 
                         if (closestBubble != null) {

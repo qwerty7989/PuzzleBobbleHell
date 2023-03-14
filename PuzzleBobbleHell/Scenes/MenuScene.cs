@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PuzzleBobbleHell.Objects;
 
 namespace PuzzleBobbleHell.Scenes
@@ -86,14 +81,14 @@ namespace PuzzleBobbleHell.Scenes
             exitButton.Draw(spriteBatch);
             logoImage.Draw(spriteBatch);
 
-            spriteBatch.Draw(cursorTexture, cursorRectangle, Color.White);
+            spriteBatch.Draw(cursorTexture, new Vector2(cursorRectangle.X, cursorRectangle.Y), null, Color.White, 0f, new Vector2(cursorTexture.Width/2f, cursorTexture.Height/2f), new Vector2(10/36f,10/34f), SpriteEffects.None, 0f);
         }
 
         private void PlayButtonAction()
         {
             // TODO: add feedback
 
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
         }
 
         private void CreditsButtonAction()
