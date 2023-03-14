@@ -79,17 +79,22 @@ namespace PuzzleBobbleHell.Objects
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_bubbleColor[colorBubble], Position, null, Color.LightGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_bubbleColor[colorBubble], Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
         public void DrawAmmo(SpriteBatch spriteBatch, Vector2 AmmoPosition)
         {
-            spriteBatch.Draw(_bubbleColor[colorBubble], AmmoPosition, null, Color.LightGray, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_bubbleColor[colorBubble], AmmoPosition, null, Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+        }
+
+        public void DrawShootingRest(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_bubbleColor[colorBubble], new Vector2(Position.X+200, Position.Y), null, Color.White, 0f, new Vector2((_bubbleColor[colorBubble].Width) / 2f, (_bubbleColor[colorBubble].Height) / 2f), 1f, SpriteEffects.None, 0f);
         }
 
         public void DrawShooting(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_bubbleColor[colorBubble], Position, null, Color.LightGray, 0f, new Vector2((_bubbleColor[colorBubble].Width) / 2f, (_bubbleColor[colorBubble].Height) / 2f), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_bubbleColor[colorBubble], Position, null, Color.White, 0f, new Vector2((_bubbleColor[colorBubble].Width) / 2f, (_bubbleColor[colorBubble].Height) / 2f), 1f, SpriteEffects.None, 0f);
         }
     }
 }

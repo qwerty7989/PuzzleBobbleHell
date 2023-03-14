@@ -14,6 +14,8 @@ namespace PuzzleBobbleHell.Objects
 
         // ? Texture2D
         protected Texture2D _cannon;
+        protected Texture2D _baseCannon;
+        protected Texture2D _cannonHolder;
         protected Texture2D _placeholderTexture;
 
         // ? Font
@@ -49,7 +51,7 @@ namespace PuzzleBobbleHell.Objects
             cursorSize = 1;
             cannonSize = new Vector2(128,149);
             float posX = (Singleton.Instance.GAME_SCREEN_SIZE.X/2f) + Singleton.Instance.GAME_SCREEN_POSITION.X;
-            float posY = (769 + (cannonSize.Y*rotateOrigin));
+            float posY = (870 + (cannonSize.Y*rotateOrigin));
             rotateOrigin = 73/100f;
             Position = new Vector2(posX, posY);
 
@@ -75,6 +77,9 @@ namespace PuzzleBobbleHell.Objects
 
             // ? Textures
             currentBubble.LoadContent(Content);
+            _baseCannon = this.contentManager.Load<Texture2D>("PlayScene/BaseCannon");
+            _cannonHolder = this.contentManager.Load<Texture2D>("PlayScene/CannonHolder");
+            _cannon = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
             //_cannon = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
             //Origin = new Vector2(_cannon.Width / 2f, _cannon.Height / 4f * 3f); // ? Center of Width, 3/4 of Height
             //for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_CARTRIDGE_SIZE; tmpX++) { _ammoBubble[tmpX].LoadContent(Content); }
@@ -162,10 +167,12 @@ namespace PuzzleBobbleHell.Objects
 
         public void CannonUI(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_placeholderTexture, Position, null, Color.White, (float)shootingDegree, new Vector2(1/2f,rotateOrigin), cannonSize, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(_placeholderTexture, Position, null, Color.White, (float)shootingDegree, new Vector2(1/2f,rotateOrigin), cannonSize, SpriteEffects.None, 0f);
 
             // ? Load cannon with sprite
-            //spriteBatch.Draw(_cannon, Position, null, Color.White, Rotation, Origin, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_cannon, Position, null, Color.White, (float)shootingDegree, new Vector2(_cannon.Width/2f,_cannon.Height*rotateOrigin), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_baseCannon, new Vector2(816, 935), null, Color.White);
+            spriteBatch.Draw(_cannonHolder, new Vector2((Singleton.Instance.GAME_SCREEN_SIZE.X/2) + Singleton.Instance.GAME_SCREEN_POSITION.X - _cannonHolder.Width/2, 864), null, Color.White);
         }
 
         public void GuidingLine(SpriteBatch spriteBatch)

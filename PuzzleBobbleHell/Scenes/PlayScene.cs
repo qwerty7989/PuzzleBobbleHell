@@ -15,6 +15,10 @@ namespace PuzzleBobbleHell.Scenes
 
         // ? Texture2D
         private Texture2D _gameBackgroundPlaceholder;
+        private Texture2D _gameScreenBackground;
+        private Texture2D _gameScreenWater;
+        private Texture2D _leftHUDBackground;
+        private Texture2D _rightHUDBackground;
 
         // ? Scene Objects
         private Cannon _cannon;
@@ -44,7 +48,10 @@ namespace PuzzleBobbleHell.Scenes
             _gameBackgroundPlaceholder.SetData(data);
 
             // ? Textures
-            //_bubblePlacholder = this.contentManager.Load<Texture2D>("PlayScene/BubbleRed");
+            _leftHUDBackground = this.contentManager.Load<Texture2D>("PlayScene/LeftHUDBackground");
+            _rightHUDBackground = this.contentManager.Load<Texture2D>("PlayScene/RightHUDBackground");
+            _gameScreenBackground = this.contentManager.Load<Texture2D>("PlayScene/PlaySceneGameBackground");
+            _gameScreenWater = this.contentManager.Load<Texture2D>("PlayScene/Water");
 
             // ? Fonts
             //_fontTerminal = this.contentManager.Load<SpriteFont>("Fonts/Terminal");
@@ -86,18 +93,19 @@ namespace PuzzleBobbleHell.Scenes
             // TODO: Add your drawing code here
 
             // ? Draw Game Background
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.GAME_SCREEN_POSITION, null, Color.LightGray, 0f, Vector2.Zero, Singleton.Instance.GAME_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_gameScreenBackground, Singleton.Instance.GAME_SCREEN_POSITION, null, Color.White);
+            spriteBatch.Draw(_gameScreenWater, new Vector2(Singleton.Instance.GAME_SCREEN_POSITION.X, 992), null, Color.White);
 
             // ? Draw Sprite
             //spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
 
             // ? Draw Objects
-            _cannon.Draw(spriteBatch);
             bubbleManager.Draw(spriteBatch);
+            _cannon.Draw(spriteBatch);
 
             // ? Draw HUD Background
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_LEFT_SCREEN_SIZE, SpriteEffects.None, 0);
-            spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_RIGHT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_RIGHT_SCREEN_SIZE, SpriteEffects.None, 0);
+            spriteBatch.Draw(_leftHUDBackground, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.White);
+            spriteBatch.Draw(_rightHUDBackground, Singleton.Instance.HUD_RIGHT_SCREEN_POSITION, null, Color.White);
         }
     }
 }

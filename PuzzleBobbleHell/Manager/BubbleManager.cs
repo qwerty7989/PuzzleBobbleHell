@@ -118,7 +118,7 @@ namespace PuzzleBobbleHell.Manager
             }
             else
             {
-                Singleton.Instance._shootingBubble.Draw(spriteBatch);
+                Singleton.Instance._shootingBubble.DrawShooting(spriteBatch);
             }
         }
 
@@ -271,7 +271,7 @@ namespace PuzzleBobbleHell.Manager
             List<string[]> currentStage = stageList[stageIndexToListIndex()];
             for (int row = 0; row < Singleton.Instance.BUBBLE_SIZE.Y; row++)
             {
-                for (int col = 0; col < (row % 2 == 0 ? Singleton.Instance.BUBBLE_SIZE.X : Singleton.Instance.BUBBLE_SIZE.X - 1); col++)
+                for (int col = 0; col < Singleton.Instance.BUBBLE_SIZE.X; col++)
                 {
                     string color = currentStage[row][col];
                     if (color == "X")

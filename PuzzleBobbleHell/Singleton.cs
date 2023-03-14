@@ -39,9 +39,9 @@ namespace PuzzleBobbleHell
 
 
         // ? PlayScene
-        public int score = 0;
-        public int mainStage = 1; // ? The main stage number (1)-1
-        public int subStage = 1; // ? The sub stage number 1-(1)
+        public int SCORE = 0;
+        public int MAIN_STAGE = 1; // ? The main stage number (1)-1
+        public int SUB_STAGE = 1; // ? The sub stage number 1-(1)
         public bool isShooting = false;
         public Bubble _shootingBubble;
         public Dictionary<string, string> BUBBLE_COLOR_DIC = new Dictionary<string, string>(){
@@ -56,10 +56,10 @@ namespace PuzzleBobbleHell
         public int SUB_STAGE_AMOUNT = 3;
         public int CANNON_CARTRIDGE_SIZE = 4;
         public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
-        public int BUBBLE_GRID_MARGIN = 64;
+        public int BUBBLE_GRID_MARGIN = 78;
         public int BUBBLE_GAP = 1;
-        public int BUBBLE_SPEED = 10;
-        public Vector2 BUBBLE_SIZE = new Vector2(12, 10);
+        public int BUBBLE_SPEED = 30;
+        public Vector2 BUBBLE_SIZE = new Vector2(9, 10);
         public Vector2 BUBBLE_START_POS = new Vector2(586, 0);
         public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
         public Vector2 GAME_SCREEN_POSITION = new Vector2(585, 0);
