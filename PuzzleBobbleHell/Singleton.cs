@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PuzzleBobbleHell.Manager;
 using PuzzleBobbleHell.Objects;
+using System.Collections.Generic;
 
 namespace PuzzleBobbleHell
 {
@@ -42,28 +43,30 @@ namespace PuzzleBobbleHell
         public int mainStage = 1; // ? The main stage number (1)-1
         public int subStage = 1; // ? The sub stage number 1-(1)
         public bool isShooting = false;
-        public Bubble shootingBubble;
-        public string[] BubbleColor = {
-            "Blue",
-            "Cyan",
-            "Green",
-            "Red",
-            "Yellow"
+        public Bubble _shootingBubble;
+        public Dictionary<string, string> BUBBLE_COLOR_DIC = new Dictionary<string, string>(){
+            {"B", "Blue"},
+            {"C", "Cyan"},
+            {"G", "Green"},
+            {"R", "Red"},
+            {"Y", "Yellow"},
+            {"X", "Black"}
         };
-        public Cannon cannon;
+        public Cannon _cannon;
+        public int SUB_STAGE_AMOUNT = 3;
         public int CANNON_CARTRIDGE_SIZE = 4;
         public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
+        public int BUBBLE_GRID_MARGIN = 64;
+        public int BUBBLE_GAP = 1;
+        public int BUBBLE_SPEED = 10;
         public Vector2 BUBBLE_SIZE = new Vector2(12, 10);
-        public Vector2 BUBBLE_START_POS = new Vector2(587, 20);
-        public Vector2 BUBBLE_MARGIN= new Vector2(62, 54);
-        public int BUBBLE_ODD_ROW_MARGIN = 32;
+        public Vector2 BUBBLE_START_POS = new Vector2(586, 0);
         public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
         public Vector2 GAME_SCREEN_POSITION = new Vector2(585, 0);
         public Vector2 HUD_LEFT_SCREEN_SIZE = new Vector2(585,1080);
         public Vector2 HUD_LEFT_SCREEN_POSITION = new Vector2(0, 0);
         public Vector2 HUD_RIGHT_SCREEN_SIZE = new Vector2(585,1080);
         public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
-        public int bounceBorderMagin = 32;
 
         // ? Singleton Stuff
         private static Singleton instance;

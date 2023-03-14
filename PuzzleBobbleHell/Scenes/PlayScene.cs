@@ -30,7 +30,7 @@ namespace PuzzleBobbleHell.Scenes
 
             // ? Initiate Objects
             _cannon = new Cannon();
-            Singleton.Instance.cannon = _cannon;
+            Singleton.Instance._cannon = _cannon;
         }
 
         public void LoadContent(ContentManager Content)
@@ -77,8 +77,8 @@ namespace PuzzleBobbleHell.Scenes
                 Singleton.Instance.isExitGame = true;
 
             // ? Update Objects
-            bubbleManager.Update(gameTime);
             _cannon.Update(gameTime);
+            bubbleManager.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -92,8 +92,8 @@ namespace PuzzleBobbleHell.Scenes
             //spriteBatch.Draw(Texture2D, Vector2, XNA.Color);
 
             // ? Draw Objects
-            bubbleManager.Draw(spriteBatch);
             _cannon.Draw(spriteBatch);
+            bubbleManager.Draw(spriteBatch);
 
             // ? Draw HUD Background
             spriteBatch.Draw(_gameBackgroundPlaceholder, Singleton.Instance.HUD_LEFT_SCREEN_POSITION, null, Color.OldLace, 0f, Vector2.Zero, Singleton.Instance.HUD_LEFT_SCREEN_SIZE, SpriteEffects.None, 0);
