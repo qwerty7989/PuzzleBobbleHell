@@ -46,7 +46,7 @@ namespace PuzzleBobbleHell.Scenes
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
 
             /* Subscribe Event */
-            playButton.OnClicked += PlayButtonAction;
+            playButton.OnClicked += ReplayButtonAction;
             nextButton.OnClicked += NextButtonAction;
         }
 
@@ -104,26 +104,20 @@ namespace PuzzleBobbleHell.Scenes
             spriteBatch.Draw(cursorTexture, new Vector2(cursorRectangle.X, cursorRectangle.Y), null, Color.White, 0f, new Vector2(cursorTexture.Width/2f, cursorTexture.Height/2f), new Vector2(10/36f,10/34f), SpriteEffects.None, 0f);
         }
 
-        private void PlayButtonAction()
+        private void ReplayButtonAction()
         {
             // TODO: add feedback
             Singleton.Instance.SUB_STAGE -= 1;
             if (Singleton.Instance.SUB_STAGE < 0)
                 Singleton.Instance.SUB_STAGE = 1;
             Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
-
-            if (Singleton.Instance.SUB_STAGE == 3)
-            {
-                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
-            }
-
         }
 
         private void NextButtonAction()
         {
             // TODO: add feedback
 
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
         }
     }
 }

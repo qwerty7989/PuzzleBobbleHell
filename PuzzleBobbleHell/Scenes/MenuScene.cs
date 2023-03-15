@@ -88,7 +88,7 @@ namespace PuzzleBobbleHell.Scenes
         {
             // TODO: add feedback
 
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.StoryScene);
         }
 
         private void CreditsButtonAction()

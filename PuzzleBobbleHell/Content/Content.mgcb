@@ -116,6 +116,30 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Pixel.spritefont
 
+#begin LoadingScene/bar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LoadingScene/bar.png
+
+#begin LoadingScene/stoke.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LoadingScene/stoke.png
+
 #begin MenuScene/back_button.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -332,6 +356,30 @@
 /processorParam:TextureFormat=Color
 /build:PlayScene/CannonHolder.png
 
+#begin PlayScene/CartridgeNormal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayScene/CartridgeNormal.png
+
+#begin PlayScene/CartridgeSpecial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayScene/CartridgeSpecial.png
+
 #begin PlayScene/LeftHUDBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -375,6 +423,18 @@
 /processorParam:TextureFormat=Color
 /build:PlayScene/RightHUDBackground.png
 
+#begin PlayScene/SpecialAmmoSymbol.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayScene/SpecialAmmoSymbol.png
+
 #begin PlayScene/Water.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -398,4 +458,23 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Slider/sliderbar.png
+
+#begin StoryScene/bgTextBox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StoryScene/bgTextBox.png
+
+#begin StoryScene/File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:StoryScene/File.spritefont
 

@@ -19,11 +19,7 @@ namespace PuzzleBobbleHell.Objects
         protected Texture2D _placeholderTexture;
 
         // ? Font
-        protected SpriteFont testingFont;
-
-        // ? Objects
-        private Bubble[] _ammoBubble;
-        private Bubble[] _ammoSpecialBubble;
+        protected SpriteFont mainFont;
 
         // ? Variables
         public Vector2 Position;
@@ -38,20 +34,12 @@ namespace PuzzleBobbleHell.Objects
         public int shootingDirection; // -1 Left, 1 Right
         public string[] BubbleColorList;
 
-        public double lastPressTime;
-        public double nowPressTime;
-        public double lastSwap;
-
-        public bool isUsingSpecialAmmo;
-        public int specialAmmoIndex;
-        public bool loadNewAmmo;
-
         public Cannon()
         {
             cursorSize = 1;
             cannonSize = new Vector2(128,149);
             float posX = (Singleton.Instance.GAME_SCREEN_SIZE.X/2f) + Singleton.Instance.GAME_SCREEN_POSITION.X;
-            float posY = (870 + (cannonSize.Y*rotateOrigin));
+            float posY = 870;
             rotateOrigin = 73/100f;
             Position = new Vector2(posX, posY);
 
@@ -61,8 +49,6 @@ namespace PuzzleBobbleHell.Objects
             shootingDirection = 0;
 
             BubbleColorList = new List<string>(Singleton.Instance.BUBBLE_COLOR_DIC.Values).ToArray();
-            currentBubble = new Bubble(posX, posY, Singleton.Instance.BUBBLE_GRID_MARGIN/2, BubbleColorList[RandomNumber(0, BubbleColorList.Length-1)], Singleton.Instance.BUBBLE_SPEED, 0, 0, Position);
-            Singleton.Instance._shootingBubble = currentBubble;
         }
 
         public void LoadContent(ContentManager Content)
@@ -76,17 +62,12 @@ namespace PuzzleBobbleHell.Objects
             _placeholderTexture.SetData(data);
 
             // ? Textures
-            currentBubble.LoadContent(Content);
             _baseCannon = this.contentManager.Load<Texture2D>("PlayScene/BaseCannon");
             _cannonHolder = this.contentManager.Load<Texture2D>("PlayScene/CannonHolder");
             _cannon = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
-            //_cannon = this.contentManager.Load<Texture2D>("PlayScene/Cannon");
-            //Origin = new Vector2(_cannon.Width / 2f, _cannon.Height / 4f * 3f); // ? Center of Width, 3/4 of Height
-            //for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_CARTRIDGE_SIZE; tmpX++) { _ammoBubble[tmpX].LoadContent(Content); }
-            //for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_SPECIAL_CARTRIDGE_SIZE; tmpX++) { _ammoSpecialBubble[tmpX].LoadContent(Content); }
 
             // ? Font
-            testingFont = contentManager.Load<SpriteFont>("PlayScene/MyFont");
+            mainFont = contentManager.Load<SpriteFont>("Font/Pixel");
         }
 
         public void UnloadContent()
@@ -122,13 +103,11 @@ namespace PuzzleBobbleHell.Objects
                 shootingDirection = 0;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && Singleton.Instance._shootingBubble.Velocity.X.Equals(0) && Singleton.Instance._shootingBubble.Velocity.Y.Equals(0)) {
+            if (keyboardState.IsKeyDown(Keys.Space) && !Singleton.Instance.isShooting && Singleton.Instance._shootingBubble.Velocity.X.Equals(0) && Singleton.Instance._shootingBubble.Velocity.Y.Equals(0)) {
                 Singleton.Instance._shootingBubble.Velocity.X = (float)(System.Math.Sin(shootingDegree) * Singleton.Instance.BUBBLE_SPEED);
                 Singleton.Instance._shootingBubble.Velocity.Y = (float)(-System.Math.Cos(shootingDegree) * Singleton.Instance.BUBBLE_SPEED);
                 Singleton.Instance.isShooting = true;
             }
-
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -136,12 +115,7 @@ namespace PuzzleBobbleHell.Objects
             // ?  Cannon and Aiming Line
             CannonUI(spriteBatch);
             GuidingLine(spriteBatch);
-
-            //// ? Cartridge Ammo UI
-            //CartridgeNormalAmmoUI(spriteBatch);
-            //CartridgeSpecialAmmoUI(spriteBatch);
         }
-
 
         public double DegreeToRadian(double degree)
         {
@@ -153,17 +127,6 @@ namespace PuzzleBobbleHell.Objects
             System.Random rnd = new System.Random();
             return rnd.Next(range) + start;
         }
-
-        // reset the bubble to shoot to the bottom of the screen
-
-
-
-
-
-
-
-
-
 
         public void CannonUI(SpriteBatch spriteBatch)
         {
@@ -196,56 +159,12 @@ namespace PuzzleBobbleHell.Objects
                 }
                 else
                 {
-                    borderToCannonDistance = newY;
-                    cursorShowLength = borderToCannonDistance/System.Math.Cos(System.Math.Abs(shootingDegree)) + (cannonSize.Y*rotateOrigin);
+                    cursorShowLength = newY/System.Math.Cos(System.Math.Abs(shootingDegree)) + (cannonSize.Y*rotateOrigin);
                 }
             }
 
             // ? Draw First Cursor
             spriteBatch.Draw(_placeholderTexture, new Vector2((float)newX, (float)newY), null, Color.Red, (float)shootingDegree, new Vector2(1/2f,1f), new Vector2(cursorSize, (float)cursorShowLength), SpriteEffects.None, 0f);
-
-
         }
-
-        public void CartridgeNormalAmmoUI(SpriteBatch spriteBatch)
-        {
-            for (int tmpX = 1; tmpX < Singleton.Instance.CANNON_CARTRIDGE_SIZE; tmpX++)
-            {
-                // ? The order is 3 2 1 0
-                _ammoBubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE-tmpX].DrawAmmo(spriteBatch, new Vector2(Singleton.Instance.BUBBLE_START_POS.X + ((tmpX-1) * 56) + 9, 980));
-            }
-        }
-
-        public void CartridgeSpecialAmmoUI(SpriteBatch spriteBatch)
-        {
-            for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_SPECIAL_CARTRIDGE_SIZE; tmpX++)
-            {
-                _ammoSpecialBubble[tmpX].DrawAmmo(spriteBatch, new Vector2(Singleton.Instance.BUBBLE_START_POS.X + (tmpX * 56) + 521, 980));
-            }
-        }
-
-        //public void Initiate()
-        //{
-        //    // ? Initite Bubble Array
-        //    _ammoBubble = new Bubble[Singleton.Instance.CANNON_CARTRIDGE_SIZE];
-        //    _ammoSpecialBubble = new Bubble[Singleton.Instance.CANNON_SPECIAL_CARTRIDGE_SIZE];
-
-        //    // ? Random out 3 color ammo
-        //    System.Random rnd = new System.Random();
-        //    for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_CARTRIDGE_SIZE; tmpX++)
-        //    {
-        //        string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
-        //        _ammoBubble[tmpX] = new Bubble(randomColor);
-        //    }
-
-        //    // ? Random special ammo
-        //    for (int tmpX = 0; tmpX < Singleton.Instance.CANNON_SPECIAL_CARTRIDGE_SIZE; tmpX++)
-        //    {
-        //        string randomColor = Singleton.Instance.BubbleColor[rnd.Next(Singleton.Instance.BubbleColor.Length)];
-        //        _ammoSpecialBubble[tmpX] = new Bubble(randomColor);
-        //    }
-
-        //    _currentBubble = _ammoBubble[0];
-        //}
     }
 }
