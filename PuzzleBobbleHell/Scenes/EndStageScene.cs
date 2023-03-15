@@ -69,9 +69,15 @@ namespace PuzzleBobbleHell.Scenes
             previousMouseState = currentMouseState;
 
             // TODO: update as list
-            playButton.Update(gameTime);
-            nextButton.Update(gameTime);
-            homeButton.Update(gameTime);
+            if (Lose == false){
+                playButton.Update(gameTime);
+                nextButton.Update(gameTime);
+            }
+            else {
+                playButton.Update(gameTime);
+                homeButton.Update(gameTime);
+                Singleton.Instance.PLAYER_LOSE = false;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -106,8 +112,8 @@ namespace PuzzleBobbleHell.Scenes
                 playButton.Draw(spriteBatch);
                 homeButton.Draw(spriteBatch);
             }
-                
-            
+
+
 
             /*playButton.Draw(spriteBatch);
             nextButton.Draw(spriteBatch);*/
@@ -134,13 +140,13 @@ namespace PuzzleBobbleHell.Scenes
         private void NextButtonAction()
         {
             // TODO: add feedback
-            if (Singleton.Instance.SUB_STAGE < 3)
+            if (Singleton.Instance.SUB_STAGE <= 3)
             {
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
             }
-            
 
-            if (Singleton.Instance.SUB_STAGE == 3)
+
+            if (Singleton.Instance.SUB_STAGE == 4)
             {
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
             }

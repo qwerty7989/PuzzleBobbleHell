@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,6 +21,10 @@ namespace PuzzleBobbleHell.Objects
 
         // ? Font
         protected SpriteFont mainFont;
+
+        // ? Sound
+        private SoundEffect _shootingEffect;
+        private SoundEffectInstance _shootingEffectInstance;
 
         // ? Variables
         public Vector2 Position;
@@ -68,6 +73,9 @@ namespace PuzzleBobbleHell.Objects
 
             // ? Font
             mainFont = contentManager.Load<SpriteFont>("Font/Pixel");
+
+            _shootingEffect = Content.Load<SoundEffect>("PlayScene/ShootingEffect");
+            _shootingEffectInstance = _shootingEffect.CreateInstance();
         }
 
         public void UnloadContent()
@@ -104,6 +112,7 @@ namespace PuzzleBobbleHell.Objects
             }
 
             if (keyboardState.IsKeyDown(Keys.Space) && !Singleton.Instance.isShooting && Singleton.Instance._shootingBubble.Velocity.X.Equals(0) && Singleton.Instance._shootingBubble.Velocity.Y.Equals(0)) {
+                _shootingEffectInstance.Play();
                 Singleton.Instance._shootingBubble.Velocity.X = (float)(System.Math.Sin(shootingDegree) * Singleton.Instance.BUBBLE_SPEED);
                 Singleton.Instance._shootingBubble.Velocity.Y = (float)(-System.Math.Cos(shootingDegree) * Singleton.Instance.BUBBLE_SPEED);
                 Singleton.Instance.isShooting = true;

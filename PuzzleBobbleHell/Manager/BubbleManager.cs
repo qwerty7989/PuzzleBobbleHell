@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace PuzzleBobbleHell.Manager
 {
@@ -16,6 +18,10 @@ namespace PuzzleBobbleHell.Manager
         // ? Texture2D
         private Texture2D _cartridgeNormalBackground;
         private Texture2D _cartridgeSpecialBackground;
+        private Texture2D[] _specialBubbleTextures;
+        private Texture2D _bossBackground;
+        private Texture2D[] _bubbleExplosion;
+        private Texture2D _bossSprite;
 
         // ? Font
         protected SpriteFont mainFont;
@@ -23,6 +29,10 @@ namespace PuzzleBobbleHell.Manager
         // ? Scene Objects
         private List<Bubble> listBubble;
         public string[] BubbleColorList;
+
+        // ? Sound
+        private SoundEffect _explosion;
+        private SoundEffectInstance _explosionInstance;
 
         // ? Objects
         private Bubble[] _normalBubbles;
@@ -54,11 +64,11 @@ namespace PuzzleBobbleHell.Manager
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}
         };
         private List<string[]> stage1_3 = new List<string[]>(){
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"R", "R", "Y", "Y", "B", "B", "G", "G", "B", "B", "G"},
             new string[]{"B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G", "G"},
-            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "B", "B", "G", "G"},
-            new string[]{"B", "B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G"},
-            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
@@ -74,11 +84,13 @@ namespace PuzzleBobbleHell.Manager
             {"Black", 5}
         };
         private int[] amountBubbleColor = { 0, 0, 0, 0, 0 };
+        private List<Vector2> listEffectPosition = new List<Vector2>();
 
         public bool isUsingSpecialAmmo;
         public int specialAmmoIndex;
         public bool loadNewAmmo;
         private bool autoPass;
+        private int currentAnimateIndex;
 
         private int haveMargin = 1;
         private double lastPressTime;
@@ -92,6 +104,8 @@ namespace PuzzleBobbleHell.Manager
             stageList.Add(stage1_3);
             _normalBubbles = new Bubble[(int)Singleton.Instance.CANNON_CARTRIDGE_SIZE];
             _specialBubbles = new Bubble[(int)Singleton.Instance.CANNON_CARTRIDGE_SIZE];
+            _specialBubbleTextures = new Texture2D[3];
+            _bubbleExplosion = new Texture2D[7];
             Singleton.Instance.isShooting = false;
             lastPressTime = 0f;
             autoPass = false;
@@ -114,6 +128,22 @@ namespace PuzzleBobbleHell.Manager
 
             _cartridgeNormalBackground = this.contentManager.Load<Texture2D>("PlayScene/CartridgeNormal");
             _cartridgeSpecialBackground = this.contentManager.Load<Texture2D>("PlayScene/CartridgeSpecial");
+            for (int i = 0; i < 3; i++)
+            {
+                _specialBubbleTextures[i] = this.contentManager.Load<Texture2D>("PlayScene/SpecialBubble"+(i+1));
+            }
+            for (int i = 0; i < 7; i++)
+            {
+                _bubbleExplosion[i] = this.contentManager.Load<Texture2D>("PlayScene/BubbleExplosion"+(i+1));
+            }
+
+            // ? Boss
+            _bossBackground = this.contentManager.Load<Texture2D>("PlayScene/BossBackground");
+            _bossSprite = this.contentManager.Load<Texture2D>("PlayScene/Boss");
+
+            // ? Song
+            _explosion = Content.Load<SoundEffect>("PlayScene/Explosion");
+            _explosionInstance = _explosion.CreateInstance();
         }
 
         public void UnloadContent()
@@ -123,6 +153,7 @@ namespace PuzzleBobbleHell.Manager
 
         public void Update(GameTime gameTime)
         {
+
             KeyboardState keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDown(Keys.P))
@@ -139,6 +170,8 @@ namespace PuzzleBobbleHell.Manager
 
 
             double nowPressTime = (gameTime.TotalGameTime.Ticks / System.TimeSpan.TicksPerMillisecond);
+
+            Animate(gameTime);
 
             // ? Ceil Dropping
             if (Singleton.Instance.SUB_STAGE == 3 && nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec * Singleton.Instance.ceilDroppingTickInSec)
@@ -179,8 +212,8 @@ namespace PuzzleBobbleHell.Manager
                     if (closestBubble == null)
                     {
                         // ? Game Over!
-                        Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
                         Singleton.Instance.PLAYER_LOSE = true;
+                        Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
                     }
 
                     if (closestBubble != null)
@@ -195,8 +228,8 @@ namespace PuzzleBobbleHell.Manager
             if (pastBorderBubble.Count > 0)
             {
                 // ? Game Over!
-                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
                 Singleton.Instance.PLAYER_LOSE = true;
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
             }
 
             Singleton.Instance.isShooting = false;
@@ -219,6 +252,24 @@ namespace PuzzleBobbleHell.Manager
             // ? Cartridge Ammo UI
             CartridgeNormalAmmoUI(spriteBatch);
             CartridgeSpecialAmmoUI(spriteBatch);
+
+            // ? Boss Drawing
+            if (Singleton.Instance.SUB_STAGE == 3)
+            {
+                spriteBatch.Draw(_bossBackground, new Vector2(Singleton.Instance.GAME_SCREEN_POSITION.X, 0), null, Color.White);
+                spriteBatch.Draw(_bossSprite, new Vector2(860, 5), null, Color.White);
+            }
+
+            foreach (Vector2 effectPosition in listEffectPosition)
+            {
+                spriteBatch.Draw(_bubbleExplosion[currentAnimateIndex], effectPosition, null, Color.White);
+            }
+
+            if (currentAnimateIndex == _bubbleExplosion.Length - 1)
+            {
+                currentAnimateIndex = 0;
+                listEffectPosition.Clear();
+            }
         }
 
         public void CartridgeNormalAmmoUI(SpriteBatch spriteBatch)
@@ -239,6 +290,19 @@ namespace PuzzleBobbleHell.Manager
             //    // ? The order is 3 2 1 0
             //    _specialBubbles[i].DrawAmmo(spriteBatch, new Vector2(1138+(55*i), 981));
             //}
+        }
+
+        public void Animate(GameTime gameTime)
+        {
+            int animationSpeed = 200; // Change this value to adjust the animation speed
+            int numFrames = _bubbleExplosion.Length;
+            int totalAnimationTime = animationSpeed * numFrames;
+
+            int animationTime = (int)gameTime.TotalGameTime.TotalMilliseconds % totalAnimationTime;
+
+            int frameIndex = animationTime / animationSpeed;
+
+            currentAnimateIndex = frameIndex % numFrames;
         }
 
         public double DegreeToRadian(double degree)
@@ -349,10 +413,12 @@ namespace PuzzleBobbleHell.Manager
 
             if (matchedBubbles.Count >= 3)
             {
+                _explosionInstance.Play();
                 matchedBubbles.ForEach(bubble =>
                 {
                     bubble.isActive = false;
                     amountBubbleColor[shortToIndex[bubble.colorBubble]]--;
+                    listEffectPosition.Add(bubble.Position);
                 });
             }
         }
@@ -381,6 +447,7 @@ namespace PuzzleBobbleHell.Manager
             {
                 bubble.isActive = false;
                 amountBubbleColor[shortToIndex[bubble.colorBubble]]--;
+                listEffectPosition.Add(bubble.Position);
             });
         }
 
@@ -431,7 +498,10 @@ namespace PuzzleBobbleHell.Manager
         public void CeilDropping()
         {
             MoveBubble();
-            GenerateBubblesWithRange(1);
+            if (Singleton.Instance.SUB_STAGE == 3)
+                GenerateBubblesAt(3, 1);
+            else
+                GenerateBubblesWithRange(1);
         }
 
         public void MoveBubble()
@@ -461,7 +531,30 @@ namespace PuzzleBobbleHell.Manager
                         amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
                     }
                 }
-                listBubble.RemoveAll(bubble => (int)System.Math.Floor(bubble.Position.Y / 75) == Singleton.Instance.BUBBLE_SIZE.Y && !bubble.isActive);
+                listBubble.RemoveAll(bubble => (int)System.Math.Floor(bubble.Position.Y / 75) >= Singleton.Instance.BUBBLE_SIZE.Y && !bubble.isActive);
+            }
+        }
+
+        public void GenerateBubblesAt(int startRow, int amountOfRow)
+        {
+            List<string[]> currentStage = stageList[stageIndexToListIndex()];
+            for (int row = startRow; row < startRow+amountOfRow; row++)
+            {
+                for (int col = 0; col < Singleton.Instance.BUBBLE_SIZE.X; col++)
+                {
+                    string color = currentStage[row][col];
+                    if (color == "X")
+                    {
+                        CreateBubble(col * Singleton.Instance.BUBBLE_GRID_MARGIN, row * Singleton.Instance.BUBBLE_GRID_MARGIN, Singleton.Instance.BUBBLE_COLOR_DIC[color]);
+                    }
+                    else
+                    {
+                        CreateBubble(col * Singleton.Instance.BUBBLE_GRID_MARGIN, row * Singleton.Instance.BUBBLE_GRID_MARGIN, Singleton.Instance.BUBBLE_COLOR_DIC[color]);
+                        amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
+                    }
+                }
+                haveMargin = (haveMargin + 1) % 2;
+                listBubble.RemoveAll(bubble => (int)System.Math.Floor(bubble.Position.Y / 75) >= Singleton.Instance.BUBBLE_SIZE.Y && !bubble.isActive);
             }
         }
 
@@ -525,7 +618,8 @@ namespace PuzzleBobbleHell.Manager
             amountBubbleColor[shortToIndex[bubbleOnGrid.colorBubble]]++;
             GetNewBubble();
             RemoveMatch(bubbleOnGrid);
-            DropFloatingBubbles();
+            if (Singleton.Instance.SUB_STAGE != 3)
+                DropFloatingBubbles();
         }
     }
 }

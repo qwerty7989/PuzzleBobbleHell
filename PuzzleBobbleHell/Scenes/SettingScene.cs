@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PuzzleBobbleHell.Objects;
+using Microsoft.Xna.Framework.Media;
 
 namespace PuzzleBobbleHell.Scenes
 {
@@ -19,17 +20,18 @@ namespace PuzzleBobbleHell.Scenes
 
         private SpriteFont textFont;
         private string headerText;
+        private string soundText;
 
         private Rectangle cursorRectangle;
         private Texture2D cursorTexture;
         private MouseState previousMouseState;
 
         private Slider soundSlider;
-        private Slider musicSlider;
 
         public SettingScene() {
             cursorRectangle = new Rectangle(0, 0, 100, 100);
             headerText = "Setting";
+            soundText = "Sound Volume";
         }
 
         public void LoadContent(ContentManager Content)
@@ -38,14 +40,12 @@ namespace PuzzleBobbleHell.Scenes
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("MenuScene/background"));
             backButton = new Button(new Rectangle(10, 10, 100, 100), contentManager.Load<Texture2D>("MenuScene/back_button"));
-            soundSlider = new Slider(new Rectangle((Singleton.Instance.widthScreen / 2) - 250, 400, 500, 40), contentManager.Load<Texture2D>("Slider/sliderbar"));
-            musicSlider = new Slider(new Rectangle((Singleton.Instance.widthScreen / 2) - 250, 500, 500, 40), contentManager.Load<Texture2D>("Slider/sliderbar"));
+            soundSlider = new Slider(new Rectangle((Singleton.Instance.widthScreen / 2) - (656 / 2), 500, 656, 100), contentManager.Load<Texture2D>("Slider/sliderbar"));
             textFont = contentManager.Load<SpriteFont>("Font/Pixel");
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
 
             /* Subscribe Event */
             soundSlider.OnChanged += UpdateSoundVolume;
-            musicSlider.OnChanged += UpdateMusicVolume;
             backButton.OnClicked += BackButtonAction;
         }
 
@@ -64,7 +64,6 @@ namespace PuzzleBobbleHell.Scenes
 
             backButton.Update(gameTime);
             soundSlider.Update(gameTime);
-            musicSlider.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -74,10 +73,11 @@ namespace PuzzleBobbleHell.Scenes
 
             Vector2 headerTextPosition = new Vector2((Singleton.Instance.widthScreen / 2) - (textFont.MeasureString(headerText).X / 2), 300);
             spriteBatch.DrawString(textFont, headerText, headerTextPosition, Color.Black);
+            Vector2 soundTextPosition = new Vector2((Singleton.Instance.widthScreen / 2) - (textFont.MeasureString(soundText).X / 2), 450);
+            spriteBatch.DrawString(textFont, soundText, soundTextPosition, Color.Black);
             spriteBatch.Draw(cursorTexture, cursorRectangle, Color.White);
 
             soundSlider.Draw(spriteBatch);
-            musicSlider.Draw(spriteBatch);
         }
 
         private void BackButtonAction()
@@ -89,14 +89,9 @@ namespace PuzzleBobbleHell.Scenes
         private void UpdateSoundVolume()
         {
             float soundVolume = soundSlider.Value;
-            // TODO: set sound volume using the soundVolume variable
-        }
 
-        private void UpdateMusicVolume()
-        {
-            float musicVolume = musicSlider.Value;
-            // TODO: set music volume using the musicVolume variable
+            Singleton.Instance.soundVolume = soundVolume;
+            MediaPlayer.Volume = Singleton.Instance.soundVolume;
         }
-
     }
 }

@@ -18,7 +18,7 @@ namespace PuzzleBobbleHell.Scenes
 
         private Texture2D backGround;
         private Texture2D foreGround;
-        private Vector2 position;
+        private Vector2 Position;
         private float progress = 0.0f;
         private float elapsedSeconds;
 
@@ -38,7 +38,7 @@ namespace PuzzleBobbleHell.Scenes
         public void Update(GameTime gameTime)
         {
             elapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            progress += elapsedSeconds / 5.0f; // Fill up over 5 seconds
+            progress += elapsedSeconds / 1.0f; // Fill up over 5 seconds
             if (progress > 1.0f)
             {
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene); // change scene

@@ -63,6 +63,7 @@ namespace PuzzleBobbleHell
         public int BUBBLE_SPEED = 40;
         public int BOSS_HEALTH = 5;
         public int PLAYER_HEALTH = 3;
+        public bool PLAYER_LOSE = false;
         public Vector2 BUBBLE_SIZE = new Vector2(9, 10);
         public Vector2 BUBBLE_START_POS = new Vector2(586, 0);
         public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
@@ -71,13 +72,7 @@ namespace PuzzleBobbleHell
         public Vector2 HUD_LEFT_SCREEN_POSITION = new Vector2(0, 0);
         public Vector2 HUD_RIGHT_SCREEN_SIZE = new Vector2(585,1080);
         public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
-
-        // TODO
-        // - Skills/Special Cartridge
-        // - Boss
-        // - Animation
-        // - Effect
-        // - Sound
+        public float soundVolume = 0.5f;
 
         // ? Singleton Stuff
         private static Singleton instance;
@@ -92,7 +87,5 @@ namespace PuzzleBobbleHell
                 return instance;
             }
         }
-
-        public bool PLAYER_LOSE = false;
     }
 }

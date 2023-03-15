@@ -43,7 +43,7 @@ namespace PuzzleBobbleHell.Scenes
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("MenuScene/background"));
             messageBox = new Button(new Rectangle(30, Singleton.Instance.heightScreen - (Singleton.Instance.heightScreen / 4), Singleton.Instance.widthScreen - 60, 210), contentManager.Load<Texture2D>("StoryScene/bgTextBox"));
-            font = contentManager.Load<SpriteFont>("StoryScene/File");
+            font = contentManager.Load<SpriteFont>("Font/Pixel");
 
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
             _currentMouseState = Mouse.GetState();
@@ -111,7 +111,7 @@ namespace PuzzleBobbleHell.Scenes
                         _Dialog = "The little boy grew up with a love for his two brothers.";
                         break;
                     case 7:
-                        _Dialog = "The eldest does everything from working on a pirate crew, selling goods, or doing other miscellaneous work to support his little sister.";
+                        _Dialog = "The eldest does everything from working on a pirate crew, selling goods, or doing\nother miscellaneous work to support his little sister.";
                         break;
                     case 8:
                         _Dialog = "But then one day.";
@@ -129,16 +129,16 @@ namespace PuzzleBobbleHell.Scenes
                         _Dialog = "He and his friend steal two pirate ships.";
                         break;
                     case 13:
-                        _Dialog = "The memories of his father's existence were still vivid. The warm hand that held his hand while driving the big boat.";
+                        _Dialog = "The memories of his father's existence were still vivid. The warm hand that held\nhis hand while driving the big boat.";
                         break;
                     case 14:
                         _Dialog = "He and his friend steal two pirate ships.";
                         break;
                     case 15:
-                        _Dialog = "And the proud smile that was sent to him after he had tried firing the cannon, the weapon of the proud pirates, on the colossal ship.";
+                        _Dialog = "And the proud smile that was sent to him after he had tried firing the cannon,\nthe weapon of the proud pirates, on the colossal ship.";
                         break;
                     case 16:
-                        _Dialog = "The protagonist sails in the same direction as the trace of the monster. Along the way, there are many obstacles...";
+                        _Dialog = "The protagonist sails in the same direction as the trace of the monster. Along the way,\nthere are many obstacles...";
                         break;
                     default:
                         Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
