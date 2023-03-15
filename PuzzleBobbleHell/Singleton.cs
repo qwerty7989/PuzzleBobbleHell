@@ -63,6 +63,7 @@ namespace PuzzleBobbleHell
         public int BUBBLE_SPEED = 40;
         public int BOSS_HEALTH = 5;
         public int PLAYER_HEALTH = 3;
+        public bool PLAYER_LOSE = false;
         public Vector2 BUBBLE_SIZE = new Vector2(9, 10);
         public Vector2 BUBBLE_START_POS = new Vector2(586, 0);
         public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
