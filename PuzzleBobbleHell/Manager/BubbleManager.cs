@@ -189,11 +189,11 @@ namespace PuzzleBobbleHell.Manager
         public void CartridgeSpecialAmmoUI(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_cartridgeSpecialBackground, new Vector2(1115, 952), null, Color.White);
-            for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE; i++)
-            {
-                // ? The order is 3 2 1 0
-                _specialBubbles[i].DrawAmmo(spriteBatch, new Vector2(1138+(55*i), 981));
-            }
+            //for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE; i++)
+            //{
+            //    // ? The order is 3 2 1 0
+            //    _specialBubbles[i].DrawAmmo(spriteBatch, new Vector2(1138+(55*i), 981));
+            //}
         }
 
         public double DegreeToRadian(double degree)
