@@ -69,9 +69,14 @@ namespace PuzzleBobbleHell.Scenes
             previousMouseState = currentMouseState;
 
             // TODO: update as list
-            playButton.Update(gameTime);
-            nextButton.Update(gameTime);
-            homeButton.Update(gameTime);
+            if (Lose == false){
+                playButton.Update(gameTime);
+                nextButton.Update(gameTime);
+            }
+            else {
+                playButton.Update(gameTime);
+                homeButton.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
