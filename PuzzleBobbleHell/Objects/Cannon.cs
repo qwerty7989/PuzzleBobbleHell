@@ -125,7 +125,6 @@ namespace PuzzleBobbleHell.Objects
             if (keyboardState.IsKeyDown(Keys.Space) && Singleton.Instance._shootingBubble.Velocity.X.Equals(0) && Singleton.Instance._shootingBubble.Velocity.Y.Equals(0)) {
                 Singleton.Instance._shootingBubble.Velocity.X = (float)(System.Math.Sin(shootingDegree) * Singleton.Instance.BUBBLE_SPEED);
                 Singleton.Instance._shootingBubble.Velocity.Y = (float)(-System.Math.Cos(shootingDegree) * Singleton.Instance.BUBBLE_SPEED);
-                Singleton.Instance.isShooting = true;
             }
 
 

@@ -50,6 +50,7 @@ namespace PuzzleBobbleHell.Objects
             this.radius = radius;
             this.colorBubble = colorBubble;
             this.isActive = isActive;
+            LoadContent(Singleton.Instance.contentManager);
         }
 
 

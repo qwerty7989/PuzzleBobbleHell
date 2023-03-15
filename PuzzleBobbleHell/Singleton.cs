@@ -42,7 +42,6 @@ namespace PuzzleBobbleHell
         public int SCORE = 0;
         public int MAIN_STAGE = 1; // ? The main stage number (1)-1
         public int SUB_STAGE = 1; // ? The sub stage number 1-(1)
-        public bool isShooting = false;
         public Bubble _shootingBubble;
         public Dictionary<string, string> BUBBLE_COLOR_DIC = new Dictionary<string, string>(){
             {"B", "Blue"},
@@ -76,7 +75,6 @@ namespace PuzzleBobbleHell
         // - Animation
         // - Effect
         // - Sound --> 2 hours
-        // - Merge Branch --> 1 hours
 
         // ? Singleton Stuff
         private static Singleton instance;

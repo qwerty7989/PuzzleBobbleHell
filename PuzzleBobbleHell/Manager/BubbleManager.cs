@@ -21,15 +21,15 @@ namespace PuzzleBobbleHell.Manager
 
         private List<List<string[]>> stageList = new List<List<string[]>>();
         private List<string[]> stage1_1 = new List<string[]>(){
-            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "G", "B", "B", "G", "G"},
+            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "G", "B", "B", "G"},
             new string[]{"R", "R", "Y", "Y", "B", "B", "G", "B", "B", "G", "G"},
-            new string[]{"B", "B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G", "G"},
+            new string[]{"B", "B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G"},
             new string[]{"B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G", "G"},
-            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
-            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
-            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}
         };
         public Dictionary<string, int> shortToIndex = new Dictionary<string, int>(){
@@ -41,12 +41,15 @@ namespace PuzzleBobbleHell.Manager
             {"Black", 5}
         };
         private int[] amountBubbleColor = {0, 0, 0, 0, 0};
+        private int haveMargin = 1;
+        private double lastPressTime;
 
         public BubbleManager()
         {
             listBubble = new List<Bubble>();
             BubbleColorList = new List<string>(Singleton.Instance.BUBBLE_COLOR_DIC.Values).ToArray();
             stageList.Add(stage1_1);
+            lastPressTime = 0f;
             GenerateBubbles();
         }
 
@@ -72,48 +75,60 @@ namespace PuzzleBobbleHell.Manager
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
             }
 
-            if (Singleton.Instance.isShooting)
+            double nowPressTime = (gameTime.TotalGameTime.Ticks / System.TimeSpan.TicksPerMillisecond);
+            if (nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec * 20)
             {
-                Singleton.Instance._shootingBubble.Position.X += Singleton.Instance._shootingBubble.Velocity.X;
-                Singleton.Instance._shootingBubble.Position.Y += Singleton.Instance._shootingBubble.Velocity.Y;
+                CeilDropping();
+                lastPressTime = nowPressTime;
+            }
 
-                // ? Bounce the Bubble against the Border.
-                if (Singleton.Instance._shootingBubble.Position.X - Singleton.Instance.BUBBLE_GRID_MARGIN / 2 < Singleton.Instance.BUBBLE_START_POS.X)
-                { // ? Left Border
-                    Singleton.Instance._shootingBubble.Position.X = Singleton.Instance.BUBBLE_START_POS.X + Singleton.Instance.BUBBLE_GRID_MARGIN / 2;
-                    Singleton.Instance._shootingBubble.Velocity.X *= -1;
-                }
-                else if (Singleton.Instance._shootingBubble.Position.X + Singleton.Instance.BUBBLE_GRID_MARGIN / 2 > Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X)
-                { // ? Right Border
-                    Singleton.Instance._shootingBubble.Position.X = (Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X) - Singleton.Instance.BUBBLE_GRID_MARGIN / 2;
-                    Singleton.Instance._shootingBubble.Velocity.X *= -1;
-                }
+            Singleton.Instance._shootingBubble.Position.X += Singleton.Instance._shootingBubble.Velocity.X;
+            Singleton.Instance._shootingBubble.Position.Y += Singleton.Instance._shootingBubble.Velocity.Y;
 
-                // ? Top Border
-                if (Singleton.Instance._shootingBubble.Position.Y - Singleton.Instance.BUBBLE_GRID_MARGIN / 2 < Singleton.Instance.BUBBLE_START_POS.Y)
+            // ? Bounce the Bubble against the Border.
+            if (Singleton.Instance._shootingBubble.Position.X - Singleton.Instance.BUBBLE_GRID_MARGIN / 2 < Singleton.Instance.BUBBLE_START_POS.X)
+            { // ? Left Border
+                Singleton.Instance._shootingBubble.Position.X = Singleton.Instance.BUBBLE_START_POS.X + Singleton.Instance.BUBBLE_GRID_MARGIN / 2;
+                Singleton.Instance._shootingBubble.Velocity.X *= -1;
+            }
+            else if (Singleton.Instance._shootingBubble.Position.X + Singleton.Instance.BUBBLE_GRID_MARGIN / 2 > Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X)
+            { // ? Right Border
+                Singleton.Instance._shootingBubble.Position.X = (Singleton.Instance.GAME_SCREEN_POSITION.X + Singleton.Instance.GAME_SCREEN_SIZE.X) - Singleton.Instance.BUBBLE_GRID_MARGIN / 2;
+                Singleton.Instance._shootingBubble.Velocity.X *= -1;
+            }
+
+            // ? Top Border
+            if (Singleton.Instance._shootingBubble.Position.Y - Singleton.Instance.BUBBLE_GRID_MARGIN / 2 < Singleton.Instance.BUBBLE_START_POS.Y)
+            {
+                Bubble closestBubble = FindClosestBubble(Singleton.Instance._shootingBubble);
+                HandleCollision(closestBubble);
+            }
+
+            // ? Collide with other Bubble
+            for (int i = 0; i < listBubble.Count; i++)
+            {
+                Bubble bubble = listBubble[i];
+                if (bubble.isActive && CheckCollides(Singleton.Instance._shootingBubble, bubble))
                 {
                     Bubble closestBubble = FindClosestBubble(Singleton.Instance._shootingBubble);
-                    handleCollision(closestBubble);
-                }
-
-                // ? Collide with other Bubble
-                for (int i = 0; i < listBubble.Count; i++)
-                {
-                    Bubble bubble = listBubble[i];
-                    if (bubble.isActive && CheckCollides(Singleton.Instance._shootingBubble, bubble))
+                    if (closestBubble == null)
                     {
-                        Bubble closestBubble = FindClosestBubble(Singleton.Instance._shootingBubble);
-                        if (closestBubble == null)
-                        {
-                            // ? Game Over!
-                            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
-                        }
+                        // ? Game Over!
+                        Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
+                    }
 
-                        if (closestBubble != null) {
-                            handleCollision(closestBubble);
-                        }
+                    if (closestBubble != null) {
+                        HandleCollision(closestBubble);
                     }
                 }
+            }
+
+            // ? Bubble Past the Border
+            List<Bubble> pastBorderBubble = listBubble.FindAll(bubble => (int)System.Math.Floor(bubble.Position.Y/75) > Singleton.Instance.BUBBLE_SIZE.Y-1 && bubble.isActive);
+            if (pastBorderBubble.Count > 0)
+            {
+                // ? Game Over!
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
             }
         }
 
@@ -125,16 +140,14 @@ namespace PuzzleBobbleHell.Manager
                 {
                     bubble.Draw(spriteBatch);
                 }
+                //else
+                //{
+                //    bubble.Draw(spriteBatch);
+                //}
             }
 
-            if (Singleton.Instance.isShooting)
-            {
-                Singleton.Instance._shootingBubble.DrawShooting(spriteBatch);
-            }
-            else
-            {
-                Singleton.Instance._shootingBubble.DrawShooting(spriteBatch);
-            }
+            Singleton.Instance._shootingBubble.DrawShooting(spriteBatch);
+
         }
 
         public double DegreeToRadian(double degree)
@@ -218,7 +231,7 @@ namespace PuzzleBobbleHell.Manager
             return neighbors;
         }
 
-        public void removeMatch(Bubble targetBubble)
+        public void RemoveMatch(Bubble targetBubble)
         {
             List<Bubble> matchedBubbles = new List<Bubble>();
             matchedBubbles.Add(targetBubble);
@@ -252,7 +265,7 @@ namespace PuzzleBobbleHell.Manager
             }
         }
 
-        public void dropFloatingBubbles()
+        public void DropFloatingBubbles()
         {
             List<Bubble> activeBubbles = listBubble.FindAll(bubble => bubble.isActive);
             activeBubbles.ForEach(bubble => bubble.isProcessed = false);
@@ -303,6 +316,7 @@ namespace PuzzleBobbleHell.Manager
                         amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
                     }
                 }
+                haveMargin = (haveMargin+1) % 2;
             }
         }
 
@@ -311,7 +325,8 @@ namespace PuzzleBobbleHell.Manager
             int row = (int)System.Math.Floor(y / Singleton.Instance.BUBBLE_GRID_MARGIN);
             int col = (int)System.Math.Floor(x / Singleton.Instance.BUBBLE_GRID_MARGIN);
 
-            int startX = (row % 2 == 0) ? 0 : (int)(Singleton.Instance.BUBBLE_GRID_MARGIN / 2);
+            int startX;
+            startX = (haveMargin % 2 == 0) ? 0 : (int)(Singleton.Instance.BUBBLE_GRID_MARGIN / 2);
             int center = Singleton.Instance.BUBBLE_GRID_MARGIN / 2;
 
             double posX = Singleton.Instance.BUBBLE_START_POS.X + ((Singleton.Instance.BUBBLE_GRID_MARGIN + Singleton.Instance.BUBBLE_GAP) * col) + startX;
@@ -321,8 +336,44 @@ namespace PuzzleBobbleHell.Manager
             listBubble.Add(new Bubble(posX, posY, Singleton.Instance.BUBBLE_GRID_MARGIN / 2, color, isActive));
         }
 
+        public void CeilDropping()
+        {
+            MoveBubble();
+            GenerateBubblesWithRange(1);
+        }
+
+        public void MoveBubble()
+        {
+            listBubble.ForEach(bubble => {
+                bubble.Position.Y += Singleton.Instance.BUBBLE_GRID_MARGIN;
+            });
+        }
+
+        public void GenerateBubblesWithRange(int amountOfRow)
+        {
+            List<string[]> currentStage = stageList[stageIndexToListIndex()];
+            for (int row = 0; row < amountOfRow; row++)
+            {
+                haveMargin = (haveMargin+1) % 2;
+                for (int col = 0; col < Singleton.Instance.BUBBLE_SIZE.X; col++)
+                {
+                    string color = currentStage[row][col];
+                    if (color == "X")
+                    {
+                        CreateBubble(col * Singleton.Instance.BUBBLE_GRID_MARGIN, row * Singleton.Instance.BUBBLE_GRID_MARGIN, Singleton.Instance.BUBBLE_COLOR_DIC[color]);
+                    }
+                    else
+                    {
+                        CreateBubble(col * Singleton.Instance.BUBBLE_GRID_MARGIN, row * Singleton.Instance.BUBBLE_GRID_MARGIN, Singleton.Instance.BUBBLE_COLOR_DIC[color]);
+                        amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
+                    }
+                }
+                listBubble.RemoveAll(bubble => (int)System.Math.Floor(bubble.Position.Y/75) == Singleton.Instance.BUBBLE_SIZE.Y && !bubble.isActive);
+            }
+        }
+
         // ? Cannon
-        public void getNewBubble()
+        public void GetNewBubble()
         {
             Singleton.Instance._shootingBubble.Position.X = Singleton.Instance._shootingBubble.originalPos.X;
             Singleton.Instance._shootingBubble.Position.Y = Singleton.Instance._shootingBubble.originalPos.Y;
@@ -339,14 +390,14 @@ namespace PuzzleBobbleHell.Manager
             Singleton.Instance._shootingBubble.colorBubble = BubbleColorList[viableColor[RandomNumber(0, viableColor.Count)]];
         }
 
-        public void handleCollision(Bubble bubbleOnGrid)
+        public void HandleCollision(Bubble bubbleOnGrid)
         {
             bubbleOnGrid.colorBubble = Singleton.Instance._shootingBubble.colorBubble;
             bubbleOnGrid.isActive = true;
             amountBubbleColor[shortToIndex[bubbleOnGrid.colorBubble]]++;
-            getNewBubble();
-            removeMatch(bubbleOnGrid);
-            dropFloatingBubbles();
+            GetNewBubble();
+            RemoveMatch(bubbleOnGrid);
+            DropFloatingBubbles();
         }
     }
 }
