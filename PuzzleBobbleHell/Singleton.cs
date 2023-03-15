@@ -93,7 +93,5 @@ namespace PuzzleBobbleHell
                 return instance;
             }
         }
-
-        public bool PLAYER_LOSE = false;
     }
 }

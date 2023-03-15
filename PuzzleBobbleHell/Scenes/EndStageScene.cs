@@ -106,8 +106,8 @@ namespace PuzzleBobbleHell.Scenes
                 playButton.Draw(spriteBatch);
                 homeButton.Draw(spriteBatch);
             }
-                
-            
+
+
 
             /*playButton.Draw(spriteBatch);
             nextButton.Draw(spriteBatch);*/
@@ -138,7 +138,7 @@ namespace PuzzleBobbleHell.Scenes
             {
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
             }
-            
+
 
             if (Singleton.Instance.SUB_STAGE == 3)
             {
