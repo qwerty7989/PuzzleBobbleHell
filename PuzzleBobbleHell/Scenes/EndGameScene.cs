@@ -37,7 +37,7 @@ namespace PuzzleBobbleHell.Scenes
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("EndStageScene/background1"));
-            CreditImage = new Image(new Rectangle((Singleton.Instance.widthScreen / 2) - 400, 100, 900, 3200), contentManager.Load<Texture2D>("EndStageScene/endCredit"));
+            CreditImage = new Image(new Rectangle((Singleton.Instance.widthScreen / 2) - 400, 100, 900, 1500), contentManager.Load<Texture2D>("EndStageScene/endCredit"));
 
             textFont = contentManager.Load<SpriteFont>("Font/Pixel");
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
