@@ -4,6 +4,7 @@ using PuzzleBobbleHell.Objects;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
 
 namespace PuzzleBobbleHell.Manager
 {
@@ -40,6 +41,30 @@ namespace PuzzleBobbleHell.Manager
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
             new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}
         };
+        private List<string[]> stage1_2 = new List<string[]>(){
+            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "B", "B", "G", "G"},
+            new string[]{"B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G", "G"},
+            new string[]{"B", "B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G"},
+            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "G", "B", "B", "G"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}
+        };
+        private List<string[]> stage1_3 = new List<string[]>(){
+            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "G", "B", "B", "G"},
+            new string[]{"B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G", "G"},
+            new string[]{"R", "R", "Y", "Y", "B", "B", "G", "B", "B", "G", "G"},
+            new string[]{"B", "B", "G", "G", "R", "R", "Y", "Y", "B", "B", "G"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"},
+            new string[]{"X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"}
+        };
         public Dictionary<string, int> shortToIndex = new Dictionary<string, int>(){
             {"Blue", 0},
             {"Cyan", 1},
@@ -53,6 +78,7 @@ namespace PuzzleBobbleHell.Manager
         public bool isUsingSpecialAmmo;
         public int specialAmmoIndex;
         public bool loadNewAmmo;
+        private bool autoPass;
 
         private int haveMargin = 1;
         private double lastPressTime;
@@ -62,9 +88,13 @@ namespace PuzzleBobbleHell.Manager
             listBubble = new List<Bubble>();
             BubbleColorList = new List<string>(Singleton.Instance.BUBBLE_COLOR_DIC.Values).ToArray();
             stageList.Add(stage1_1);
+            stageList.Add(stage1_2);
+            stageList.Add(stage1_3);
             _normalBubbles = new Bubble[(int)Singleton.Instance.CANNON_CARTRIDGE_SIZE];
             _specialBubbles = new Bubble[(int)Singleton.Instance.CANNON_CARTRIDGE_SIZE];
+            Singleton.Instance.isShooting = false;
             lastPressTime = 0f;
+            autoPass = false;
             GenerateBubbles();
             InitiateBubble();
         }
@@ -93,13 +123,25 @@ namespace PuzzleBobbleHell.Manager
 
         public void Update(GameTime gameTime)
         {
-            if (listBubble.FindAll(bubble => bubble.isActive).Count == 0)
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.P))
             {
-                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
+                autoPass = true;
             }
 
+
+            if (listBubble.FindAll(bubble => bubble.isActive).Count == 0 || autoPass)
+            {
+                Singleton.Instance.SUB_STAGE += 1;
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
+            }
+
+
             double nowPressTime = (gameTime.TotalGameTime.Ticks / System.TimeSpan.TicksPerMillisecond);
-            if (nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec * Singleton.Instance.ceilDroppingTickInSec)
+
+            // ? Ceil Dropping
+            if (Singleton.Instance.SUB_STAGE == 3 && nowPressTime - lastPressTime > Singleton.Instance.gameTicksInMilliSec * Singleton.Instance.ceilDroppingTickInSec)
             {
                 CeilDropping();
                 lastPressTime = nowPressTime;

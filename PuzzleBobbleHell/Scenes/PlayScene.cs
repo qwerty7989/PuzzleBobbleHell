@@ -23,10 +23,6 @@ namespace PuzzleBobbleHell.Scenes
         // ? Scene Objects
         private Cannon _cannon;
 
-        // ? Gameplay variable
-        private int playerHealth = 3; // ? Starting health with 3 hearts.
-        private int bossHealth = -1; // ? -1, mean there's no boss existed.
-
         public PlayScene()
         {
             // ? Initiate Bubble Manager
