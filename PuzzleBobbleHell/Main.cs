@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PuzzleBobbleHell.Manager;
-using System.Numerics;
-using System.Xml;
 
 namespace PuzzleBobbleHell
 {
@@ -16,6 +14,7 @@ namespace PuzzleBobbleHell
         {
             // ? System-related variable and setting.
             _graphics = new GraphicsDeviceManager(this);
+            Singleton.Instance.graphicsDeviceManager = _graphics;
             Content.RootDirectory = "Content";
             Singleton.Instance.contentManager = Content;
             IsMouseVisible = false; // ? Not showing mouse cursor.
@@ -30,6 +29,7 @@ namespace PuzzleBobbleHell
             // ? in the Singleton class.
             _graphics.PreferredBackBufferWidth = Singleton.Instance.widthScreen;
             _graphics.PreferredBackBufferHeight = Singleton.Instance.heightScreen;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
 
@@ -52,7 +52,7 @@ namespace PuzzleBobbleHell
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Singleton.Instance.isExitGame)
                 Exit();
 
             // ? System-related logic code here. e.g. isFullScreen, isExitGame

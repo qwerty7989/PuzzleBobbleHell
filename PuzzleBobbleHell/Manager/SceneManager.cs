@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using PuzzleBobbleHell.Scenes; // ! Import every file from ./Scenes folders
 using Microsoft.Xna.Framework.Content;
@@ -14,7 +8,7 @@ namespace PuzzleBobbleHell.Manager
     public class SceneManager
     {
         private GameScene currentGameScene;
-        public enum SceneName 
+        public enum SceneName
         {
             // ? Each Scene files are referenced here.
             MenuScene,
@@ -26,10 +20,12 @@ namespace PuzzleBobbleHell.Manager
             EndStageScene,
             EndGameScene,
         }
+
         public SceneManager()
         {
             currentGameScene= new PlaceholderScene();
         }
+
         public void changeScene(SceneName sceneName)
         {
             switch (sceneName)

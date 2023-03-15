@@ -79,8 +79,8 @@ namespace PuzzleBobbleHell.Scenes
             );
 
             spriteBatch.Draw(CreditImage.Texture, creditRectangle, Color.White);
-                
-            spriteBatch.Draw(cursorTexture, cursorRectangle, Color.White);
+
+            spriteBatch.Draw(cursorTexture, new Vector2(cursorRectangle.X, cursorRectangle.Y), null, Color.White, 0f, new Vector2(cursorTexture.Width/2f, cursorTexture.Height/2f), new Vector2(10/36f,10/34f), SpriteEffects.None, 0f);
         }
     }
 }
