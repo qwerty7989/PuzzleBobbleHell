@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using PuzzleBobbleHell.Objects;
+using Microsoft.Xna.Framework.Media;
 
 namespace PuzzleBobbleHell.Scenes
 {
@@ -22,6 +23,8 @@ namespace PuzzleBobbleHell.Scenes
         private Rectangle cursorRectangle;
         private Texture2D cursorTexture;
         private MouseState previousMouseState;
+
+        private Song backgroundMusic;
 
         public MenuScene()
         {
@@ -47,6 +50,10 @@ namespace PuzzleBobbleHell.Scenes
             optionsButton.OnClicked += OptionsButtonAction;
             musicButton.OnClicked += MusicButtonAction;
             exitButton.OnClicked += ExitButtonAction;
+
+            backgroundMusic = Content.Load<Song>("Audio/backgroundmusic");
+            MediaPlayer.Volume = Singleton.Instance.soundVolume;
+            MediaPlayer.Play(backgroundMusic);
         }
 
         public void UnloadContent()

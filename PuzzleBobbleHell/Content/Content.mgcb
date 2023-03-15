@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/backgroundmusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/backgroundmusic.mp3
+
 #begin EndStageScene/background1.png
 /importer:TextureImporter
 /processor:TextureProcessor
