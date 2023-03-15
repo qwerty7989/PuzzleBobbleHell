@@ -202,6 +202,7 @@ namespace PuzzleBobbleHell.Manager
                         // ? Game Over!
                         Singleton.Instance.PLAYER_LOSE = true;
                         Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
+                        Singleton.Instance.PLAYER_LOSE = true;
                     }
 
                     if (closestBubble != null)
@@ -216,8 +217,7 @@ namespace PuzzleBobbleHell.Manager
             if (pastBorderBubble.Count > 0)
             {
                 // ? Game Over!
-               Singleton.Instance.PLAYER_LOSE = true;
-               Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
             }
 
             Singleton.Instance.isShooting = false;
