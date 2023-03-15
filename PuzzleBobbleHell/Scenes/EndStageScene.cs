@@ -76,6 +76,7 @@ namespace PuzzleBobbleHell.Scenes
             else {
                 playButton.Update(gameTime);
                 homeButton.Update(gameTime);
+                Singleton.Instance.PLAYER_LOSE = false;
             }
         }
 
@@ -139,13 +140,13 @@ namespace PuzzleBobbleHell.Scenes
         private void NextButtonAction()
         {
             // TODO: add feedback
-            if (Singleton.Instance.SUB_STAGE < 3)
+            if (Singleton.Instance.SUB_STAGE <= 3)
             {
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
             }
 
 
-            if (Singleton.Instance.SUB_STAGE == 3)
+            if (Singleton.Instance.SUB_STAGE == 4)
             {
                 Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
             }

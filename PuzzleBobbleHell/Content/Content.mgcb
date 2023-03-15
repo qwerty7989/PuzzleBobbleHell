@@ -500,6 +500,12 @@
 /processorParam:TextureFormat=Color
 /build:PlayScene/CartridgeSpecial.png
 
+#begin PlayScene/Explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PlayScene/Explosion.wav
+
 #begin PlayScene/LeftHUDBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -542,6 +548,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayScene/RightHUDBackground.png
+
+#begin PlayScene/ShootingEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PlayScene/ShootingEffect.wav
 
 #begin PlayScene/SpecialAmmoSymbol.png
 /importer:TextureImporter
