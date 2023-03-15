@@ -72,13 +72,7 @@ namespace PuzzleBobbleHell
         public Vector2 HUD_LEFT_SCREEN_POSITION = new Vector2(0, 0);
         public Vector2 HUD_RIGHT_SCREEN_SIZE = new Vector2(585,1080);
         public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
-
-        // TODO
-        // - Skills/Special Cartridge
-        // - Boss
-        // - Animation
-        // - Effect
-        // - Sound
+        public float soundVolume = 0.5f;
 
         // ? Singleton Stuff
         private static Singleton instance;
