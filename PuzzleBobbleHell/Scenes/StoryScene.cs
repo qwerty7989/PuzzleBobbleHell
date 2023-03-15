@@ -43,7 +43,7 @@ namespace PuzzleBobbleHell.Scenes
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("MenuScene/background"));
             messageBox = new Button(new Rectangle(30, Singleton.Instance.heightScreen - (Singleton.Instance.heightScreen / 4), Singleton.Instance.widthScreen - 60, 210), contentManager.Load<Texture2D>("StoryScene/bgTextBox"));
-            font = contentManager.Load<SpriteFont>("StoryScene/file");
+            font = contentManager.Load<SpriteFont>("StoryScene/File");
 
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
             _currentMouseState = Mouse.GetState();
@@ -102,7 +102,7 @@ namespace PuzzleBobbleHell.Scenes
                         _Dialog = "legendary pirate died our adventures of our lives and the waiting family at home.";
                         break;
                     case 4:
-                        _Dialog = "A single mother in an era when pirates were few and far betweenใ";
+                        _Dialog = "A single mother in an era when pirates were few and far between.";
                         break;
                     case 5:
                         _Dialog = "The wife left her two young children in an old house by the sea.";
@@ -138,10 +138,10 @@ namespace PuzzleBobbleHell.Scenes
                         _Dialog = "And the proud smile that was sent to him after he had tried firing the cannon, the weapon of the proud pirates, on the colossal ship.";
                         break;
                     case 16:
-                        _Dialog = "The protagonist sails in the same direction as the trace of the monster. Along the way, there are many obstacles…";
+                        _Dialog = "The protagonist sails in the same direction as the trace of the monster. Along the way, there are many obstacles...";
                         break;
                     default:
-                        Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
+                        Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
                         break;
                 }
             }

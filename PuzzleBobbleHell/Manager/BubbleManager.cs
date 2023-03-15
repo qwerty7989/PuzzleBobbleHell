@@ -73,7 +73,7 @@ namespace PuzzleBobbleHell.Manager
             {"Yellow", 4},
             {"Black", 5}
         };
-        private int[] amountBubbleColor = {0, 0, 0, 0, 0};
+        private int[] amountBubbleColor = { 0, 0, 0, 0, 0 };
 
         public bool isUsingSpecialAmmo;
         public int specialAmmoIndex;
@@ -182,14 +182,15 @@ namespace PuzzleBobbleHell.Manager
                         Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndStageScene);
                     }
 
-                    if (closestBubble != null) {
+                    if (closestBubble != null)
+                    {
                         HandleCollision(closestBubble);
                     }
                 }
             }
 
             // ? Bubble Past the Border
-            List<Bubble> pastBorderBubble = listBubble.FindAll(bubble => (int)System.Math.Floor(bubble.Position.Y/75) > Singleton.Instance.BUBBLE_SIZE.Y-1 && bubble.isActive);
+            List<Bubble> pastBorderBubble = listBubble.FindAll(bubble => (int)System.Math.Floor(bubble.Position.Y / 75) > Singleton.Instance.BUBBLE_SIZE.Y - 1 && bubble.isActive);
             if (pastBorderBubble.Count > 0)
             {
                 // ? Game Over!
@@ -224,7 +225,7 @@ namespace PuzzleBobbleHell.Manager
             for (int i = Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1; i > 0; i--)
             {
                 // ? The order is 3 2 1 0
-                _normalBubbles[i].DrawAmmo(spriteBatch, new Vector2(736-(55*(i-1)), 981));
+                _normalBubbles[i].DrawAmmo(spriteBatch, new Vector2(736 - (55 * (i - 1)), 981));
             }
         }
 
@@ -346,7 +347,8 @@ namespace PuzzleBobbleHell.Manager
 
             if (matchedBubbles.Count >= 3)
             {
-                matchedBubbles.ForEach(bubble => {
+                matchedBubbles.ForEach(bubble =>
+                {
                     bubble.isActive = false;
                     amountBubbleColor[shortToIndex[bubble.colorBubble]]--;
                 });
@@ -404,7 +406,7 @@ namespace PuzzleBobbleHell.Manager
                         amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
                     }
                 }
-                haveMargin = (haveMargin+1) % 2;
+                haveMargin = (haveMargin + 1) % 2;
             }
         }
 
@@ -432,7 +434,8 @@ namespace PuzzleBobbleHell.Manager
 
         public void MoveBubble()
         {
-            listBubble.ForEach(bubble => {
+            listBubble.ForEach(bubble =>
+            {
                 bubble.Position.Y += Singleton.Instance.BUBBLE_GRID_MARGIN;
             });
         }
@@ -442,7 +445,7 @@ namespace PuzzleBobbleHell.Manager
             List<string[]> currentStage = stageList[stageIndexToListIndex()];
             for (int row = 0; row < amountOfRow; row++)
             {
-                haveMargin = (haveMargin+1) % 2;
+                haveMargin = (haveMargin + 1) % 2;
                 for (int col = 0; col < Singleton.Instance.BUBBLE_SIZE.X; col++)
                 {
                     string color = currentStage[row][col];
@@ -456,13 +459,13 @@ namespace PuzzleBobbleHell.Manager
                         amountBubbleColor[shortToIndex[Singleton.Instance.BUBBLE_COLOR_DIC[color]]]++;
                     }
                 }
-                listBubble.RemoveAll(bubble => (int)System.Math.Floor(bubble.Position.Y/75) == Singleton.Instance.BUBBLE_SIZE.Y && !bubble.isActive);
+                listBubble.RemoveAll(bubble => (int)System.Math.Floor(bubble.Position.Y / 75) == Singleton.Instance.BUBBLE_SIZE.Y && !bubble.isActive);
             }
         }
 
         public void InitiateBubble()
         {
-            float posX = (Singleton.Instance.GAME_SCREEN_SIZE.X/2f) + Singleton.Instance.GAME_SCREEN_POSITION.X;
+            float posX = (Singleton.Instance.GAME_SCREEN_SIZE.X / 2f) + Singleton.Instance.GAME_SCREEN_POSITION.X;
             float posY = 870;
 
             // ? Only Random from the pool of Color
@@ -478,7 +481,7 @@ namespace PuzzleBobbleHell.Manager
             // ? Generate 4 Bubble, 3 for Cartridge, 1 for Cannon
             for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE; i++)
             {
-                _normalBubbles[i] = new Bubble(posX, posY, Singleton.Instance.BUBBLE_GRID_MARGIN/2, BubbleColorList[viableColor[RandomNumber(0, viableColor.Count)]], Singleton.Instance.BUBBLE_SPEED, 0, 0, new Vector2(posX, posY));
+                _normalBubbles[i] = new Bubble(posX, posY, Singleton.Instance.BUBBLE_GRID_MARGIN / 2, BubbleColorList[viableColor[RandomNumber(0, viableColor.Count)]], Singleton.Instance.BUBBLE_SPEED, 0, 0, new Vector2(posX, posY));
             }
 
             Singleton.Instance._shootingBubble = _normalBubbles[0];
@@ -503,12 +506,12 @@ namespace PuzzleBobbleHell.Manager
 
             for (int i = 0; i < Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1; i++)
             {
-                _normalBubbles[i] = _normalBubbles[i+1];
+                _normalBubbles[i] = _normalBubbles[i + 1];
             }
 
-            float posX = (Singleton.Instance.GAME_SCREEN_SIZE.X/2f) + Singleton.Instance.GAME_SCREEN_POSITION.X;
+            float posX = (Singleton.Instance.GAME_SCREEN_SIZE.X / 2f) + Singleton.Instance.GAME_SCREEN_POSITION.X;
             float posY = 870;
-            _normalBubbles[Singleton.Instance.CANNON_CARTRIDGE_SIZE-1] = new Bubble(posX, posY, Singleton.Instance.BUBBLE_GRID_MARGIN/2, BubbleColorList[viableColor[RandomNumber(0, viableColor.Count)]], Singleton.Instance.BUBBLE_SPEED, 0, 0, new Vector2(posX, posY));
+            _normalBubbles[Singleton.Instance.CANNON_CARTRIDGE_SIZE - 1] = new Bubble(posX, posY, Singleton.Instance.BUBBLE_GRID_MARGIN / 2, BubbleColorList[viableColor[RandomNumber(0, viableColor.Count)]], Singleton.Instance.BUBBLE_SPEED, 0, 0, new Vector2(posX, posY));
 
             Singleton.Instance._shootingBubble.colorBubble = _normalBubbles[0].colorBubble;
         }
