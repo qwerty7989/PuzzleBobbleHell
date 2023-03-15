@@ -111,6 +111,12 @@ namespace PuzzleBobbleHell.Scenes
             if (Singleton.Instance.SUB_STAGE < 0)
                 Singleton.Instance.SUB_STAGE = 1;
             Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
+
+            if (Singleton.Instance.SUB_STAGE == 3)
+            {
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
+            }
+
         }
 
         private void NextButtonAction()

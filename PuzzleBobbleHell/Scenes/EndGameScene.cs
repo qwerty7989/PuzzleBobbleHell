@@ -64,6 +64,13 @@ namespace PuzzleBobbleHell.Scenes
             {
                 creditPosition = 0;
             }
+
+
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            // ? Exit game with Escape
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                Singleton.Instance.isExitGame = true;
         }
 
         public void Draw(SpriteBatch spriteBatch)
