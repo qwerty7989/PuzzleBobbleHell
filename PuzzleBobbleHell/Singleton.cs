@@ -11,7 +11,7 @@ using System.Transactions;
 namespace PuzzleBobbleHell
 {
     /// <summary>
-    /// 
+    ///
     /// <example>
     /// For example:
     /// <code>
@@ -37,7 +37,7 @@ namespace PuzzleBobbleHell
         // ? PlayScene
         public int Score = 0;
         public int mainStage = 1; // ? The main stage number (1)-1
-        public int subStage = 1; // ? The sub stage number 1-(1)
+        public int SUB_STAGE = 1; // ? The sub stage number 1-(1)
 
 
         // ? Singleton Stuff

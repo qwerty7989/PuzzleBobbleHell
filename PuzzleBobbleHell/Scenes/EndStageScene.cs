@@ -112,8 +112,10 @@ namespace PuzzleBobbleHell.Scenes
         private void PlayButtonAction()
         {
             // TODO: add feedback
-
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.MenuScene);
+            Singleton.Instance.SUB_STAGE -= 1;
+            if (Singleton.Instance.SUB_STAGE < 0)
+                Singleton.Instance.SUB_STAGE = 1;
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.PlayScene);
         }
 
         private void NextButtonAction()
