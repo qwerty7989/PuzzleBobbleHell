@@ -10,10 +10,13 @@ namespace PuzzleBobbleHell.Scenes
     {
         int Score = Singleton.Instance.SCORE;
 
+        bool Lose = Singleton.Instance.PLAYER_LOSE;
+
         private ContentManager contentManager;
 
         private Button playButton;
         private Button nextButton;
+        private Button homeButton;
 
         private Image backgroundImage;
         private Image starfishImage;
@@ -40,14 +43,16 @@ namespace PuzzleBobbleHell.Scenes
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("EndStageScene/background1"));
 
-            playButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) -160, 600, 75, 75), contentManager.Load<Texture2D>("EndStageScene/PAG"));
-            nextButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) -40, 600, 200, 75), contentManager.Load<Texture2D>("EndStageScene/next"));
+            playButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) -160, 700, 75, 75), contentManager.Load<Texture2D>("EndStageScene/PAG"));
+            nextButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) -40, 700, 200, 75), contentManager.Load<Texture2D>("EndStageScene/next"));
+            homeButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 40, 700, 200, 75), contentManager.Load<Texture2D>("EndStageScene/home"));
             textFont = contentManager.Load<SpriteFont>("Font/Pixel");
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
 
             /* Subscribe Event */
             playButton.OnClicked += ReplayButtonAction;
             nextButton.OnClicked += NextButtonAction;
+            homeButton.OnClicked += HomeButtonAction;
         }
 
         public void UnloadContent()
@@ -66,6 +71,7 @@ namespace PuzzleBobbleHell.Scenes
             // TODO: update as list
             playButton.Update(gameTime);
             nextButton.Update(gameTime);
+            homeButton.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -92,8 +98,20 @@ namespace PuzzleBobbleHell.Scenes
             starfishImage = new Image(new Rectangle((Singleton.Instance.widthScreen / 2) - 250, 180, 500, 250), starfishTexture);
             starfishImage.Draw(spriteBatch);
 
-            playButton.Draw(spriteBatch);
-            nextButton.Draw(spriteBatch);
+            if (Lose == false){
+                playButton.Draw(spriteBatch);
+                nextButton.Draw(spriteBatch);
+            }
+            else {
+                playButton.Draw(spriteBatch);
+                homeButton.Draw(spriteBatch);
+            }
+                
+            
+
+            /*playButton.Draw(spriteBatch);
+            nextButton.Draw(spriteBatch);*/
+
 
             Vector2 paragraphPosition = new Vector2((Singleton.Instance.widthScreen / 2) - (textFont.MeasureString(paragraph).X / 2), (Singleton.Instance.heightScreen / 2) - (textFont.MeasureString(paragraph).Y / 2));
             spriteBatch.DrawString(textFont, paragraph, paragraphPosition, Color.White);
@@ -116,8 +134,22 @@ namespace PuzzleBobbleHell.Scenes
         private void NextButtonAction()
         {
             // TODO: add feedback
+            if (Singleton.Instance.SUB_STAGE < 3)
+            {
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
+            }
+            
 
-            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.LoadingScene);
+            if (Singleton.Instance.SUB_STAGE == 3)
+            {
+                Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.EndGameScene);
+            }
+        }
+
+        private void HomeButtonAction()
+        {
+            // TODO: add feedback
+            Singleton.Instance.sceneManager.changeScene(Manager.SceneManager.SceneName.MenuScene);
         }
     }
 }
