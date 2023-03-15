@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using PuzzleBobbleHell.Manager;
 using System;
@@ -39,6 +40,7 @@ namespace PuzzleBobbleHell
         public int mainStage = 1; // ? The main stage number (1)-1
         public int subStage = 1; // ? The sub stage number 1-(1)
 
+        public float soundVolume = 0.5f;
 
         // ? Singleton Stuff
         private static Singleton instance;
@@ -53,5 +55,8 @@ namespace PuzzleBobbleHell
                 return instance;
             }
         }
+
+        
+
     }
 }

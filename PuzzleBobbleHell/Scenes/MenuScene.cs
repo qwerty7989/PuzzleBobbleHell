@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PuzzleBobbleHell.Objects;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace PuzzleBobbleHell.Scenes
 {
@@ -28,6 +30,8 @@ namespace PuzzleBobbleHell.Scenes
         private Texture2D cursorTexture;
         private MouseState previousMouseState;
 
+        private Song backgroundMusic;
+
         public MenuScene()
         {
             cursorRectangle = new Rectangle(0, 0, 100, 100);
@@ -38,11 +42,11 @@ namespace PuzzleBobbleHell.Scenes
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
 
             backgroundImage = new Image(new Rectangle(0, 0, Singleton.Instance.widthScreen, Singleton.Instance.heightScreen), contentManager.Load<Texture2D>("MenuScene/background"));
-            playButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 500, 300, 75), contentManager.Load<Texture2D>("MenuScene/play_button"));
-            creditsButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 600, 300, 75), contentManager.Load<Texture2D>("MenuScene/credits_button"));
-            optionsButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 700, 300, 75), contentManager.Load<Texture2D>("MenuScene/options_button"));
-            musicButton = new Button(new Rectangle(50, 50, 50, 50), contentManager.Load<Texture2D>("MenuScene/music_button"));
-            exitButton = new Button(new Rectangle(Singleton.Instance.widthScreen - 100, 50, 50, 50), contentManager.Load<Texture2D>("MenuScene/exit_button"));
+            playButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 500, 248, 82), contentManager.Load<Texture2D>("MenuScene/play_button"));
+            creditsButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 600, 248, 82), contentManager.Load<Texture2D>("MenuScene/credits_button"));
+            optionsButton = new Button(new Rectangle((Singleton.Instance.widthScreen / 2) - 150, 700, 248, 82), contentManager.Load<Texture2D>("MenuScene/options_button"));
+            musicButton = new Button(new Rectangle(50, 50, 80, 80), contentManager.Load<Texture2D>("MenuScene/music_button"));
+            exitButton = new Button(new Rectangle(Singleton.Instance.widthScreen - 100, 50, 80, 80), contentManager.Load<Texture2D>("MenuScene/exit_button"));
             logoImage = new Image(new Rectangle((Singleton.Instance.widthScreen / 2) - 315, 100, 630, 350), contentManager.Load<Texture2D>("MenuScene/logo"));
             cursorTexture = contentManager.Load<Texture2D>("MenuScene/cursor");
 
@@ -52,6 +56,10 @@ namespace PuzzleBobbleHell.Scenes
             optionsButton.OnClicked += OptionsButtonAction;
             musicButton.OnClicked += MusicButtonAction;
             exitButton.OnClicked += ExitButtonAction;
+
+            backgroundMusic = Content.Load<Song>("Audio/backgroundmusic");
+            MediaPlayer.Volume = Singleton.Instance.soundVolume;
+            MediaPlayer.Play(backgroundMusic);
         }
 
         public void UnloadContent()
@@ -86,7 +94,7 @@ namespace PuzzleBobbleHell.Scenes
             exitButton.Draw(spriteBatch);
             logoImage.Draw(spriteBatch);
 
-            spriteBatch.Draw(cursorTexture, cursorRectangle, Color.White);
+            spriteBatch.Draw(cursorTexture, new Vector2(cursorRectangle.X, cursorRectangle.Y), null, Color.White, 0f, new Vector2(cursorTexture.Width / 2f, cursorTexture.Height / 2f), new Vector2(10 / 36f, 10 / 34f), SpriteEffects.None, 0f);
         }
 
         private void PlayButtonAction()
@@ -117,7 +125,7 @@ namespace PuzzleBobbleHell.Scenes
 
         private void ExitButtonAction()
         {
-            // TODO: add code to handle exit button click
+            Singleton.Instance.isExitGame = true;
         }
     }
 }

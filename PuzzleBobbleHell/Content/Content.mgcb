@@ -13,17 +13,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin C:/Users/toythn/Downloads/sliderbar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:C:/Users/toythn/Downloads/sliderbar.png;Slider/sliderbar.png
+#begin Audio/backgroundmusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/backgroundmusic.mp3
 
 #begin Font/Pixel.spritefont
 /importer:FontDescriptionImporter
@@ -139,4 +133,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MenuScene/play_button.png
+
+#begin Slider/slider.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Slider/slider.png;Slider/sliderbar.png
 

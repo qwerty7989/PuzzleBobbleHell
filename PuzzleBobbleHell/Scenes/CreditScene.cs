@@ -20,6 +20,7 @@ namespace PuzzleBobbleHell.Scenes
 
         private SpriteFont textFont;
         private string paragraph; // TODO: add a Text class that handle a text
+        private string title;
 
         private Rectangle cursorRectangle;
         private Texture2D cursorTexture;
@@ -29,7 +30,8 @@ namespace PuzzleBobbleHell.Scenes
         {
             cursorRectangle = new Rectangle(0, 0, 100, 100);
 
-            paragraph = "Credits";
+            title = "Credits";
+            paragraph = "Nattapat Ungkadaecha \n Thanut Sitthiprasong \n Chatnapat Sretnachok \n Ploychomphu Tulsuk";
         }
 
         public void LoadContent(ContentManager Content)
@@ -66,8 +68,11 @@ namespace PuzzleBobbleHell.Scenes
             backgroundImage.Draw(spriteBatch);
             backButton.Draw(spriteBatch);
 
+            Vector2 titlePosition = new Vector2((Singleton.Instance.widthScreen / 2) - (textFont.MeasureString(title).X / 2), 300);
+            spriteBatch.DrawString(textFont, title, titlePosition, Color.Black);
             Vector2 paragraphPosition = new Vector2((Singleton.Instance.widthScreen / 2) - (textFont.MeasureString(paragraph).X / 2), (Singleton.Instance.heightScreen / 2) - (textFont.MeasureString(paragraph).Y / 2));
             spriteBatch.DrawString(textFont, paragraph, paragraphPosition, Color.Black);
+
             spriteBatch.Draw(cursorTexture, cursorRectangle, Color.White);
         }
 
