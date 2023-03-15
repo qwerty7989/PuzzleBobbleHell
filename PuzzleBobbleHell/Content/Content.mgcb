@@ -308,6 +308,30 @@
 /processorParam:TextureFormat=Color
 /build:PlayScene/CannonHolder.png
 
+#begin PlayScene/CartridgeNormal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayScene/CartridgeNormal.png
+
+#begin PlayScene/CartridgeSpecial.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayScene/CartridgeSpecial.png
+
 #begin PlayScene/LeftHUDBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -350,6 +374,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayScene/RightHUDBackground.png
+
+#begin PlayScene/SpecialAmmoSymbol.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayScene/SpecialAmmoSymbol.png
 
 #begin PlayScene/Water.png
 /importer:TextureImporter

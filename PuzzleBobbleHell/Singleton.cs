@@ -39,6 +39,7 @@ namespace PuzzleBobbleHell
 
 
         // ? PlayScene
+        public int ceilDroppingTickInSec = 40;
         public int SCORE = 0;
         public int MAIN_STAGE = 1; // ? The main stage number (1)-1
         public int SUB_STAGE = 1; // ? The sub stage number 1-(1)
@@ -52,12 +53,14 @@ namespace PuzzleBobbleHell
             {"X", "Black"}
         };
         public Cannon _cannon;
+        public bool isShooting = false;
         public int SUB_STAGE_AMOUNT = 3;
         public int CANNON_CARTRIDGE_SIZE = 4;
         public int CANNON_SPECIAL_CARTRIDGE_SIZE = 3;
+        public int CARTRIDGE_BUBBLE_GRID_MARGIN = 41;
         public int BUBBLE_GRID_MARGIN = 78;
         public int BUBBLE_GAP = 1;
-        public int BUBBLE_SPEED = 30;
+        public int BUBBLE_SPEED = 40;
         public Vector2 BUBBLE_SIZE = new Vector2(9, 10);
         public Vector2 BUBBLE_START_POS = new Vector2(586, 0);
         public Vector2 GAME_SCREEN_SIZE = new Vector2(750,1080);
@@ -68,13 +71,11 @@ namespace PuzzleBobbleHell
         public Vector2 HUD_RIGHT_SCREEN_POSITION = new Vector2(1335, 0);
 
         // TODO
-        // - Cartridge
-        // - Ceiling Drop --> 1 hours
+        // - Skills/Special Cartridge
         // - Boss
-        // - Skills --> 1 hours
         // - Animation
         // - Effect
-        // - Sound --> 2 hours
+        // - Sound
 
         // ? Singleton Stuff
         private static Singleton instance;

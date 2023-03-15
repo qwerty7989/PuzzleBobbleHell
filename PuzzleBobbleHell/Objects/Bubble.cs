@@ -21,7 +21,21 @@ namespace PuzzleBobbleHell.Objects
         public bool isShootable;
         public double radius;
 
-        // ? Shooting Bubble
+        // ? Special Shooting Bubble
+        public Bubble(double posX, double posY, int radius, string colorBubble, int speed, int dx, int dy, Vector2 originalPos, int skills)
+        {
+            Position.X = (float)posX;
+            Position.Y = (float)posY;
+            this.radius = radius;
+            this.colorBubble = colorBubble;
+            this.Velocity.X = dx;
+            this.Velocity.Y = dy;
+            this.originalPos = originalPos;
+            this.isShootable = true;
+            LoadContent(Singleton.Instance.contentManager);
+        }
+
+        // ? Normal Shooting Bubble
         public Bubble(double posX, double posY, int radius, string colorBubble, int speed, int dx, int dy, Vector2 originalPos)
         {
             Position.X = (float)posX;
@@ -32,6 +46,7 @@ namespace PuzzleBobbleHell.Objects
             this.Velocity.Y = dy;
             this.originalPos = originalPos;
             this.isShootable = true;
+            LoadContent(Singleton.Instance.contentManager);
         }
 
         // ? Dummy Bubble
@@ -40,6 +55,7 @@ namespace PuzzleBobbleHell.Objects
             Position.X = (float)posX;
             Position.Y = (float)posY;
             this.radius = radius;
+            LoadContent(Singleton.Instance.contentManager);
         }
 
         // ? Bubble
@@ -83,7 +99,7 @@ namespace PuzzleBobbleHell.Objects
 
         public void DrawAmmo(SpriteBatch spriteBatch, Vector2 AmmoPosition)
         {
-            spriteBatch.Draw(_bubbleColor[colorBubble], AmmoPosition, null, Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_bubbleColor[colorBubble], AmmoPosition, null, Color.White, 0f, Vector2.Zero, 41f/78f, SpriteEffects.None, 0f);
         }
 
         public void DrawShootingRest(SpriteBatch spriteBatch)
